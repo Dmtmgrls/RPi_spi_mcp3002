@@ -3,10 +3,10 @@
 Niveau ⭐⭐⭐
 
 <details>
-<summary><b>Etapes de traitement des données</b></summary><br>
+     <summary><b>Etapes de traitement des données</b></summary><br>
 
 ><details>
-><summary><b>1 Chargement du fichier dans Excel</b></summary><br>
+>     <summary><b>1 Chargement du fichier dans Excel</b></summary><br>
 >
 > Ouvrir $Excel$ et charger le fichier $mesure\\_ rise.txt$.<br>
 > Il faut pré-formater ce fichier sur les 3 aspects suivants :<br>
@@ -16,9 +16,9 @@ Niveau ⭐⭐⭐
 >   - Pour la colonnes $time$, sélectionner que le ***point*** est le **séparateur décimal**.
 >
 ></details>
-
+>
 ><details>
-><summary><b>2 Normaliser la colonne Dij0</b></summary><br>
+>     <summary><b>2 Normaliser la colonne Dij0</b></summary><br>
 >
 >><details>
 >><summary><b>Pré traitement</b></summary><br>
@@ -43,7 +43,7 @@ Niveau ⭐⭐⭐
 >>   -  telque $Dij0(t_{I}) = DIJ0$ $\forall$ $t_{I} \in [0,0001; t_{15s}]$ ?<br><br>
 >></details>
 >><details>
->><summary><b>Consolidation et courbe</b></summary><br>
+>>    <summary><b>Consolidation et courbe</b></summary><br>
 >>
 >>- ( 1 ) Nommer $Gap\\_glis$ la colonne $[F]$ qui calculera la moyenne glissante de $Gap$
 >>- ( 2 ) Insérer la courbe suivante : <br>
@@ -97,7 +97,7 @@ Niveau ⭐⭐⭐
 >>
 >></details>
 ></details>
-
+>
 ><details>
 >    <summary><b>3 Mise en oeuvre du model</b></summary><br>
 >
@@ -146,11 +146,25 @@ Niveau ⭐⭐⭐
 >>    -   Cellule **[M6]** contient la formules Excel : $=SOMME(M9:M_{N})$
 >>
 >></details>
-
-><details>
->    <summary><b>4 Estimation du temps de réponse thermique du TMP36</b></summary><br>
->
-> A DEVELLOPER
->
 ></details>
+>
+</details>
+<details>
+    <summary><b>Estimation du temps de réponse thermique du TMP36</b></summary><br>
+
+- ( 1 )  Valeur initiales :
+    - Le temps de mesure est de 15 secondes, prenons  $\tau = 10 \pm5 secondes$
+        -    $\tau$ = 10 secondes
+        -    $\epsilon$ = 5 secondes
+ - ( 2 ) Valeur suivantes : 
+    - Le résultat précédent nous indique que $\tau_{optimal}$ est entre $[0, 5] s$, prenons alors $\tau = 2 \pm1 s$
+ - ( 3 ) Valeur suivantes : 
+    -  Le résultat précédent nous indique que $\tau_{optimal}$ est entre $[3, 5] s$, prenons alors $\tau = 4 \pm0.5 s$
+ - ( 3 bis ) Valeur suivantes :
+      -  Le résultat précédent nous indique que $\tau_{optimal}$ est entre $[3,5; 4,5] s$, prenons alors $\tau = 3.8 \pm0.1 s$- 
+ - ( 4 )  En continuant sur le même principe on trouve que \tau_{optimal}$ s'approche de la valeur $3,6809$
+      
+![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h.png)<br><br>
+
+
 </details>
