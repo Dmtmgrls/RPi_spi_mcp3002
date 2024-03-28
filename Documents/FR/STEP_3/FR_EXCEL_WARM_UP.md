@@ -1,4 +1,4 @@
-tient## EXPLOITATION DES MESURES DANS LA PHASE MONTÉ EN TEMPÉRATURE
+### EXPLOITATION DES MESURES DANS LA PHASE MONTÉ EN TEMPÉRATURE
 
 Niveau ⭐⭐⭐
 
@@ -102,50 +102,55 @@ Niveau ⭐⭐⭐
 >    <summary><b>3 Mise en oeuvre du model</b></summary><br>
 >
 >><details>
->>    <summary><b>Ajout de nouvelle colonnes et cellules de calcul.</b></summary><br>
+>>    <summary><b>Ajout de la formule mathématique du model.</b></summary><br>
 >>
->>- La cellule ***H8*** contient la formule Excel : $=Gap\\_glis\\_Max*(1-exp(-E8/(Tau)))$<br>
->>  Propager cette formule sur toute la collone **[H]**.
+>>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_2_g.png)<br><br>
+>>
+>>- Ecrire respectivement dans les cellules ***H3, H4, H5*** les labels  $\tau$, $\epsilon$ , $Gap\\\_glis\\\_Max$ <br>
+>>- Nommer respectivement les cellules ***I3, I4, I5*** par __"Tau", "Epsilon" , "Gap_glis_Max"__ <br>
+>>
+>>- Donner à la cellule ***H8*** le titre _"model"_.
+>>- Les cellules $H_{k}$ continnent la formule  $=Gap\\\_glis\\\_Max * (1 - EXP(- E_{k} / (Tau)))$<br>
+>>
 >>
 >></details>
+>>
 >><details>
->>    <summary><b>Ajout des cellules [I1], [I2], [I3].</b></summary><br>
+>>    <summary><b>Ajout des calculs des moindres carrés</b></summary><br>
 >>
->>- Nommer la cellule **[I1]** par **"Tau"**.<br>
->>- Nommer la cellule **[I2]** par **"Epsilon"**.<br>
->>- Nommer la cellule **[I3]** par **"Gap_glis_Max"**.<br>   
->>- Insérer la nouvelle courbe correspondant : <br>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_2_g.png)<br><br>
+>>
+>> Le principe est de minimiser la ***sommes des carrés des écart*** entre le _model_ et _la moyenne glissante_.<br>
+>> C'est à dire minimiser l'erreur en faisant varier la valeur de $\tau$ :
+>>
+>> $$erreur_{minimale} = \sum_{d=0}^{N} (model(time_{d}, \tau_{optimale})) - Gap\\\_glis(time_{d}))^{2}$$
+>>
+>> Pour simplifier la recherche manuelle de la valeur optimale de $\tau$ nous calculons l'effet de la variation de $\tau$ d'une valeur de $\pm\epsilon$:
+>>- $K_{d} = model(time_{d}, \tau -\epsilon)) - Gap\\\_glis(time_{d})$
+>>- $L_{d} = model(time_{d}, \tau )) - Gap\\\_glis(time_{d})$
+>>- $M_{d} = model(time_{d}, \tau +\epsilon)) - Gap\\\_glis(time_{d})$
+>><br>
+>> Les formules à placer dans les celleules seront donc :
+>>
+>>- Pour $i \in [9, N]$<br>
+>>
+>>    -   Cellule **[Ki]** contient la formules Excel : $=(Gi-Gap\\_glis\\_Max*(1-exp(-Ei/(Tau-Epsilon))))^2$
+>>    -   Cellule **[Li]** contient la formules Excel : $=(Gi-Hi)^2$
+>>    -   Cellule **[Mi]** contient la formules Excel : $=(Gi-Gap\\_glis\\_Max*(1-exp(-Ei/(Tau+Epsilon))))^2$
+>>
+>>- Pour les cellules **[K6], [L6], [M6]**, on calcul la somme des carrés.<br>
+>>
+>>    -   Cellule **[K6]** contient la formules Excel : $=SOMME(K9:K_{N})$
+>>    -   Cellule **[L6]** contient la formules Excel : $=SOMME(L9:L_{N})$
+>>    -   Cellule **[M6]** contient la formules Excel : $=SOMME(M9:M_{N})$
+>>
 >></details>
-></details>
 
 ><details>
->    <summary><b>4 Mise en oeuvre de la méthode des moindres carrés</b></summary><br>
->
->- Pour $i \in [8, 1443]$, on calcul le carré de la différence entre $Gap\\\_glis(t_{i})$ et $model(t_{i} \pm\tau)$.<br>
->
->    -   Cellule **[Ki]** contient la formules Excel : $=(Gi-Gap\\_glis\\_Max*(1-exp(-Ei/(Tau-Epsilon))))^2$
->    -   Cellule **[Li]** contient la formules Excel : $=(Gi-Gap\\_glis\\_Max*(1-exp(-Ei/(Tau))))^2$
->    -   Cellule **[Mi]** contient la formules Excel : $=(Gi-Gap\\_glis\\_Max*(1-exp(-Ei/(Tau+Epsilon))))^2$
->
->- Pour $Col \in [K, L, M]$, on calcul la somme des carrés.<br>
->
->    -   Cellule **[K3]** contient la formules Excel : $=SOMME(K8:K1443)$
->    -   Cellule **[L3]** contient la formules Excel : $=SOMME(L8:L1443)$
->    -   Cellule **[M3]** contient la formules Excel : $=SOMME(M8:M1443)$
->
->
->![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_2_e.png)<br><br>
->
-></details>
-
-><details>
->    <summary><b>5 Estimation du temps de réponse thermique du TMP36</b></summary><br>
+>    <summary><b>4 Estimation du temps de réponse thermique du TMP36</b></summary><br>
 >
 > A DEVELLOPER
 >
 ></details>
 </details>
-
-
-
-
