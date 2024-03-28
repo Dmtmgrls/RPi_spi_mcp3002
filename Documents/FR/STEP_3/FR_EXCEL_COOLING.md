@@ -30,17 +30,17 @@ Niveau ⭐⭐⭐
 >>-  ( 4 ) En colonne $[G]$ et suivantes, calculer les distributions des valeurs de $Dij0$ comprisent entre $[MIN(Dij0),MAX(Dij0]$<br><br>
 >>- Les formules sont résumées ci-dessous : <br>
 >>
->>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_2_a.png)<br><br>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_a.png)<br><br>
 >>
 >>- Le résultat de ces formules est le suivant :<br>
 >>
->>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_2_b.png)<br><br>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_b.png)<br><br>
 >>  
->>   -    Les valeurs de $Dij0$ sont comprises entre 221 et 226 bits.<br>
->>   -    Les valeurs 224 et 223 sont les plus fréquentes, et rentre dans la catégorie $\pm 1 bit$.<br>
+>>   -    Les valeurs de $Dij0$ sont comprises entre 223 et 230 bits.<br>
+>>   -    Les valeurs 224 et 225 sont les plus fréquentes, et rentre dans la catégorie $\pm 1 bit$.<br>
 >>   -    Les autres valeurs sont **_incertaines_** puisqu'en théorie $Dij0$ est **_constante_**.<br> 
 >>- Il faut maintenant répondre à la question : Quelle est la valeur $DIJ0$<br>
->>   -  telque $Dij0(t_{I}) = DIJ0$ $\forall$ $t_{I} \in [0,0001; t_{15s}]$ ?<br><br>
+>>   -  telque $Dij0(t_{I}) = DIJ0$ $\forall$ $t_{I} \in [0,0001; t_{60s}]$ ?<br><br>
 >></details>
 >><details>
 >>    <summary><b>Consolidation et courbe</b></summary><br>
@@ -50,15 +50,18 @@ Niveau ⭐⭐⭐
 >>    - Abcisses : $time$
 >>    - Ordonnées : $Gap$ (en bleu), $Gap\\_glis$ en rouge.<br><br>
 >>
->>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_2_c.png)<br><br>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_c.png)<br><br>
 >>
->>- On constates :
->>   - Les points de mesures correspondants au $Gap$ sont très dispérsées. Cela tient aux faits que :<br>
+>>- On constates qu'au tout début du refroidissement les mesures sont aberrantes.<br>
 >>
->>       - (1) $Gap = (Dij1 \pm1 bit) - ( Dij0 \pm1 bit ) \implies$ $Gap \pm2bits$.<br>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_cbis.png)<br><br> 
 >>
->>       - (2) $Dij0$ est théoriquement **_constant_**, or certaines de ses valeurs varient de façon aberrantes.<br>
->>         Elles passent, par exemple de 222 à 226, puis reviennent à 224 en l'espace de 20 ms.<br><br>
+>>  Cette partie correspond au relachement du TMP36 qui en bougeant de mauvais contact perturbent les mesures.<br>
+>>  Il faut donc : <br>
+>>
+>>    -  Supprimer les mesures antérieures à $1,4$ $seconde
+>>    -  Insérer une colonne entre les colonnes **[D]** et  **[E]**, puis affecter le nom $time_{d}$ à la colonne **[E]**  <br>
+>>    -  Calculer le décalage temporel : $time_{d} = time$ -  $t\\_offset$ <br>
 >>
 >>   - La courbe correspondant au $Gap\\_glis$ montre l'effet de la moyenne glissante qui lisse ces dispersions
 >>     sans pour autant masquer la forme en escalier de la courbe associée à $Gap$.
@@ -189,4 +192,5 @@ Niveau ⭐⭐⭐
 >![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h5.png)<br>
 >
 </details>>
+
 
