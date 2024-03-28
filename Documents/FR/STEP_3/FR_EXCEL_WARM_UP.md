@@ -152,19 +152,35 @@ Niveau ⭐⭐⭐
 <details>
     <summary><b>Estimation du temps de réponse thermique du TMP36</b></summary><br>
 
-- ( 1 )  Valeur initiales :
-    - Le temps de mesure est de 15 secondes, prenons  $\tau = 10 \pm5 secondes$
-        -    $\tau$ = 10 secondes
-        -    $\epsilon$ = 5 secondes
- - ( 2 ) Valeur suivantes : 
-    - Le résultat précédent nous indique que $\tau_{optimal}$ est entre $[0, 5] s$, prenons alors $\tau = 2 \pm1 s$
- - ( 3 ) Valeur suivantes : 
-    -  Le résultat précédent nous indique que $\tau_{optimal}$ est entre $[3, 5] s$, prenons alors $\tau = 4 \pm0.5 s$
- - ( 3 bis ) Valeur suivantes :
-      -  Le résultat précédent nous indique que $\tau_{optimal}$ est entre $[3,5; 4,5] s$, prenons alors $\tau = 3.8 \pm0.1 s$- 
- - ( 4 )  En continuant sur le même principe on trouve que \tau_{optimal}$ s'approche de la valeur $3,6809$
-      
-![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h.png)<br><br>
-
-
+><details>
+>    <summary><b>Méthode d'estimation</b></summary><br>
+>
+>- Estimation initiale :
+>    - Le temps de mesure est de 15 secondes, prenons arbitrairement $\tau = 10 \pm5 secondes$<br><br>
+>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h1.png)<br>
+>
+>- Estimation suivante : 
+>    - Le résultat précédent nous indique que $\tau_{optimal}$ est entre **0 et 5 s**. Prenons arbitrairement $\tau = 2 \pm1 s$<br><br>
+>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h2.png)<br>
+>
+>- Estimation suivante : 
+>    -  Le résultat précédent nous indique que $\tau_{optimal}$ est entre **3 et 5 s**. Prenons arbitrairement $\tau = 4 \pm0.5 s$<br><br>
+>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h3.png)<br>
+>
+>- Estimation suivante :
+>    -  Le résultat précédent nous indique que $\tau_{optimal}$ est entre **3.5 et 4 s**. Prenons arbitrairements $\tau = 3.8 \pm0.1 s$<br>
+>       Et ainsi de suite jusqu'à ce que l'on estime que la précision est suffisante.<br><br>
+>       
+>- Ainsi, on trouve que $\tau_{optimal}$ s'approche de la valeur $3,6809$ soit plus raisonablement $3.7 \pm 0.01$<br><br>
+>
+>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h4.png)<br>
+>      
+></details>
+>
+><details>
+>    <summary><b>Résultat graphique</b></summary><br>
+>
+>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h5.png)<br>
+>
 </details>
+
