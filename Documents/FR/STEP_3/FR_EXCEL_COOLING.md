@@ -1,4 +1,4 @@
-### EXPLOITATION DES MESURES DANS LA PHASE MONTÉ EN TEMPÉRATURE
+### EXPLOITATION DES MESURES DANS LA PHASE REFROIDISSEMENT
 
 Niveau ⭐⭐⭐
 
@@ -8,7 +8,7 @@ Niveau ⭐⭐⭐
 ><details>
 >     <summary><b>1 Chargement du fichier dans Excel</b></summary><br>
 >
-> Ouvrir $Excel$ et charger le fichier $mesure\\_ rise.txt$.<br>
+> Ouvrir $Excel$ et charger le fichier $mesure\\_cooling.txt$.<br>
 > Il faut pré-formater ce fichier sur les 3 aspects suivants :<br>
 >
 >   - Les champs du fichier sont délimités par le caractère point-virgule $;$.
@@ -189,3 +189,4 @@ Niveau ⭐⭐⭐
 >![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h5.png)<br>
 >
 </details>>
+
