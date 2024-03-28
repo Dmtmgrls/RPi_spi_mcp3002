@@ -1,0 +1,27 @@
+3.1 Analog Inputs (CH0/CH1)
+Analog inputs for channels 0 and 1 respectively. These
+channels can programmed to be used as two
+independent channels in single ended-mode or as a
+single pseudo-differential input where one channel is
+IN+ and one channel is IN-. See Section 5.0 “Serial
+Communications” for information on programming
+the channel configuration.
+3.2 Chip Select/Shutdown (CS/SHDN)
+The CS/SHDN pin is used to initiate communication
+with the device when pulled low and will end a
+conversion and put the device in low power standby
+when pulled high. The CS/SHDN pin must be pulled
+high between conversions.
+3.3 Serial Clock (CLK)
+The SPI clock pin is used to initiate a conversion and to
+clock out each bit of the conversion as it takes place.
+See Section 6.2 “Maintaining Minimum Clock
+Speed” for constraints on clock speed.
+3.4 Serial Data Input (DIN)
+The SPI port serial data input pin is used to clock in
+input channel configuration data.
+3.5 Serial Data Output (DOUT)
+The SPI serial data output pin is used to shift out the
+results of the A/D conversion. Data will always change
+on the falling edge of each clock as the conversion
+takes place.

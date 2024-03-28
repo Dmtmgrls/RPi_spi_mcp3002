@@ -1,0 +1,27 @@
+3.1 Entrées analogiques (CH0/CH1)
+Entrées analogiques pour les canaux 0 et 1 respectivement. Ces
+les canaux peuvent être programmés pour être utilisés comme deux
+canaux indépendants en mode asymétrique ou en tant que
+entrée pseudo-différentielle unique où un canal est
+IN+ et un canal est IN-. Voir la section 5.0 « Série
+Communications » pour obtenir des informations sur la programmation
+la configuration des canaux.
+3.2 Sélection/arrêt de la puce (CS/SHDN)
+La broche CS/SHDN est utilisée pour initier la communication
+avec l'appareil lorsqu'il est tiré vers le bas et mettra fin à un
+conversion et mettre l'appareil en veille à faible consommation
+lorsqu'il est tiré haut. La broche CS/SHDN doit être retirée
+élevé entre les conversions.
+3.3 Horloge série (CLK)
+La broche d'horloge SPI est utilisée pour lancer une conversion et pour
+pointez chaque bit de la conversion au fur et à mesure qu'elle a lieu.
+Voir la section 6.2 « Maintien de l'horloge minimale
+Vitesse »pour les contraintes sur la vitesse d’horloge.
+3.4 Entrée de données série (DIN)
+La broche d'entrée de données série du port SPI est utilisée pour synchroniser
+données de configuration du canal d'entrée.
+3.5 Sortie de données série (DOUT)
+La broche de sortie de données série SPI est utilisée pour décaler le
+résultats de la conversion A/D. Les données changeront toujours
+sur le front descendant de chaque horloge lors de la conversion
+se déroule.

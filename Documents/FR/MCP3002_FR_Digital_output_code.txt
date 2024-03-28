@@ -1,0 +1,19 @@
+4.2 Code de sortie numérique
+Le code de sortie numérique produit par un convertisseur A/D
+est fonction du signal d'entrée et de la référence
+tension. Pour le MCP3002, VDD est utilisé comme
+tension de référence.
+À mesure que le niveau VDD est réduit, la taille du LSB est réduite
+par conséquent. Le code théorique de sortie numérique
+produit par le convertisseur A/D est illustré ci-dessous.
+
+
+Taille LSB = VREF / 1024
+
+
+Code de sortie numérique = 1024*VIN/VDD
+
+
+Où:
+VIN = tension d'entrée analogique
+VDD = tension d'alimentation

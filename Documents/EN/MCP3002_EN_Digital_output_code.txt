@@ -1,0 +1,19 @@
+4.2 Digital Output Code
+The digital output code produced by an A/D Converter
+is a function of the input signal and the reference
+voltage. For the MCP3002, VDD is used as the
+reference voltage.
+As the VDD level is reduced, the LSB size is reduced
+accordingly. The theoretical digital output code
+produced by the A/D Converter is shown below.
+
+
+LSB Size = VREF / 1024
+
+
+Digital Output Code = 1024*VIN / VDD
+
+
+Where:
+VIN = analog input voltage
+VDD = supply voltage
