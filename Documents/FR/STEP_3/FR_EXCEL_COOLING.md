@@ -164,13 +164,14 @@ Niveau ⭐⭐⭐
 >![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_g3.png)<br><br>
 >
 >- Estimation suivante :
->    -  Le résultat précédent nous indique que $\tau_{optimal}$ est entre **3.5 et 4 s**. Prenons arbitrairements $\tau = 3.8 \pm0.1 s$<br>
+>    -  Le résultat précédent nous indique que $\tau_{optimal}$ est  **< 24,5 s**. Prenons arbitrairements $\tau = 23 \pm1 s$<br>
 >       Et ainsi de suite jusqu'à ce que l'on estime que la précision est suffisante.<br><br>
->       
->- Ainsi, on trouve que $\tau_{optimal}$ s'approche de la valeur $3,6809$ soit plus raisonablement $3.7 \pm 0.01$<br><br>
->
+> 
 >![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_g4.png)<br>
->      
+> 
+>- Ainsi, on trouve que $\tau_{optimal}$ s'approche de la valeur $23 \pm0.5$ <br><br>
+>
+     
 ></details>
 >
 ><details>
