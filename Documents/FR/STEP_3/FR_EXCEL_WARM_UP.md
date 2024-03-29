@@ -13,7 +13,7 @@ Niveau ⭐⭐⭐
 >
 >   - Les champs du fichier sont délimités par le caractère point-virgule $;$.
 >   - Le fichier contient une en-tête $Dij0; Dij1; time$.
->   - Pour la colonnes $time$, sélectionner que le ***point*** est le **séparateur décimal**.
+>   - Pour la colonnes $time$, sélectionner le ***point*** en tant que **séparateur décimal**.
 >
 ></details>
 >
@@ -188,4 +188,4 @@ Niveau ⭐⭐⭐
 > 
 >![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h5.png)<br>
 >
-</details>>
+</details>
