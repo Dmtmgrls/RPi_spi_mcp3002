@@ -13,7 +13,7 @@ Niveau ⭐⭐⭐
 >
 >   - Les champs du fichier sont délimités par le caractère point-virgule $;$.
 >   - Le fichier contient une en-tête $Dij0; Dij1; time$.
->   - Pour la colonnes $time$, sélectionner que le ***point*** est le **séparateur décimal**.
+>   - Pour la colonnes $time$, sélectionner le ***point*** en tant que **séparateur décimal**.
 >
 ></details>
 >
@@ -26,77 +26,58 @@ Niveau ⭐⭐⭐
 >>-  ( 1a ) Insérer sept lignes, en haut de feuille, pour laisser de la place pour les calculs qui suivent.
 >>-  ( 1b ) Insérer une colonne $[A]$ pour laisser de la place pour les calculs qui suivent.
 >>-  ( 2 ) Nommer la colonne $[E]$ par le label $Gap$. Les cellules contiendrons $Gap(t_{I}) = Dij1(t_{I}) - Dij0(t_{I})$
->>-  ( 3 ) Calculer les valeurs : Cellule $[B4] = MAX(Dij0)$ et Cellule $[B5] = MIN(Dij0)$ avec $t_{I} \in [0,0001; t_{15s}]$.
->>-  ( 4 ) En colonne $[G]$ et suivantes, calculer les distributions des valeurs de $Dij0$ comprisent entre $[MIN(Dij0),MAX(Dij0]$<br><br>
->>- Les formules sont résumées ci-dessous : <br>
+>>-  ( 3 ) Calculer les valeurs : Cellule $[B4] = MAX(Dij0)$ et Cellule $[B5] = MIN(Dij0)$ avec $t_{I} \in [0,0001; t_{60s}]$.
+>>-  ( 4 ) En colonne $[G]$ et suivantes, calculer les distributions des valeurs de $Dij0$ comprisent entre $[MIN(Dij0),MAX(Dij0]$
+>>-  ( 5 ) Nommer la colonne $[F]$ par le label $Gap\\\_glis$. Calculer la moyenne glissante tel que $\forall I \in [9, I_{Max}]$   $$F_{I} = \frac{1}{8}*\sum_{i=I}^{I+8} E_{I}$$<br>
+>>- **Les formules sont résumées ci-dessous :** <br>
 >>
 >>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_a.png)<br><br>
 >>
->>- Le résultat de ces formules est le suivant :<br>
+>>- **Le résultat de ces formules est le suivant :**<br>
 >>
 >>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_b.png)<br><br>
->>  
->>   -    Les valeurs de $Dij0$ sont comprises entre 223 et 230 bits.<br>
->>   -    Les valeurs 224 et 225 sont les plus fréquentes, et rentre dans la catégorie $\pm 1 bit$.<br>
->>   -    Les autres valeurs sont **_incertaines_** puisqu'en théorie $Dij0$ est **_constante_**.<br> 
->>- Il faut maintenant répondre à la question : Quelle est la valeur $DIJ0$<br>
->>   -  telque $Dij0(t_{I}) = DIJ0$ $\forall$ $t_{I} \in [0,0001; t_{60s}]$ ?<br><br>
+>> 
+>>- **On constate que :**
+>>   -    Les valeurs de $Dij0$ sont comprises entre **223** et **230** bits.<br>
+>>      -    Les valeurs **224** et **225** sont les plus fréquentes, et elles rentrent dans la catégorie $\pm 1 bit$.<br>
+>>      -    Les autres valeurs sont **_incertaines_** puisqu'en théorie $Dij0$ est **_constante_**.<br><br> 
+>>- **Il faut maintenant répondre à la question :** Quelle est la valeur $DIJ0$<br>
+>>   -  tel que $\forall$  $t_{I} \in [0,0001; t_{60s}]$  $Dij0(t_{I}) = DIJ0$ ?<br><br>
 >></details>
 >><details>
 >>    <summary><b>Consolidation et courbe</b></summary><br>
 >>
->>- ( 1 ) Nommer $Gap\\_glis$ la colonne $[F]$ qui calculera la moyenne glissante de $Gap$
->>- ( 2 ) Insérer la courbe suivante : <br>
+>>
+>>- **Insérer la courbe suivante :** <br>
 >>    - Abcisses : $time$
 >>    - Ordonnées : $Gap$ (en bleu), $Gap\\_glis$ en rouge.<br><br>
 >>
 >>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_c.png)<br><br>
 >>
->>- On constates qu'au tout début du refroidissement les mesures sont aberrantes.<br>
+>>- **On constate que :**
+>>   - La courbe correspondant au $Gap\\_glis$ montre l'effet de la moyenne glissante qui lisse ces dispersions
+>>     sans pour autant masquer la forme en escalier de la courbe associée à $Gap$.<br>
+>>
+>>    - Dans les premières secondes du refroidissement les mesures sont aberrantes.
+>>    - Si l'on fait un $Zoom$ sur ces premières secondes on obtient la courbe ci-dessous :<br>
 >>
 >>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_cbis.png)<br><br> 
 >>
->>  Cette partie correspond au relachement du TMP36 qui en bougeant de mauvais contact perturbent les mesures.<br>
->>  Il faut donc : <br>
+>>- **On constate que :**
+>>    -  La partie correspond  $t_{I} \in [0.0; 0.7]$ le TMP36 est encore tenu.
+>>    -  La partie correspond  $t_{I} \in [0.7; 1.4]$ le TMP36 est en cours d'être relâché.
+>>       Le TMP36 étant monté sur une platine de test sans soudure, les mouvements perturbent les connexions.
+>>    -  La partie correspond  $t_{I} \in [1.4, t_{60s}]$  le TMP36 n'est plus tenu.<br>
 >>
->>    -  Supprimer les mesures antérieures à $1,4$ $seconde
->>    -  Insérer une colonne entre les colonnes **[D]** et  **[E]**, puis affecter le nom $time_{d}$ à la colonne **[E]**  <br>
->>    -  Calculer le décalage temporel : $time_{d} = time$ -  $t\\_offset$ <br>
+>>- **Il faut donc :**
+>>   
+>>    -  ( 1 ) Insérer une colonne entre les colonnes **[D]** et  **[E]**.
+>>    -  ( 2 ) Affecter le nom $time_{d}$ à la colonne **[E]**
+>>    -  ( 3 ) $\forall t_{I} \in [0.0001, t_{60s}]$  $E_{I} = D_{I} -  1.4$ secondes <br>
+>>    -  ( 4 ) Supprimer les lignes des mesures antérieures à $t_{I} \lt 1,40023$ seconde
+>>    -  ( 5 ) Puisque les valeurs $Dij0 = 24$ sont les plus représentatives, nous imposons  $\forall t_{I}$ $\in [0.0000, t_{60s}]$  $B_{I} = 224$<br>
 >>
->>   - La courbe correspondant au $Gap\\_glis$ montre l'effet de la moyenne glissante qui lisse ces dispersions
->>     sans pour autant masquer la forme en escalier de la courbe associée à $Gap$.
->>
->>- Après avoir testé les valeurs de  $Dij0 \in [221, 226]$ les résultats sont les suivants :
->>   - $\forall$ $Dij0 \in [221, 222]$ alors $Gap > 0$
->>   - $\exists$ $Dij0 \in [224, 225, 226]$ tel que $Gap < 0$ 
->>   - $SI Dij0 = 223$ Alors $Gap \ge 0$ C'est la valeur la plus adaptée.
->></details>
->><details>
->>    <summary><b>Les choix.</b></summary>
->>
->>- Suite aux tests précédents, les valeurs retenues sont  :<br>
->>
->>    -   $Dij0(t_{I}) = 223$  $\forall$  $t_{I} \in [0,0001, t_{15s}]$.<br><br>
->>    -   Pour éliminer les mesures au tous début et ne garder qu'une seule valeur $Gap = 0$ on pratique un
->>        décalage temporel $t_{offset} = 0,28064$ tel que $time_{d} = t_{I}$ -  $t_{offset}$<br><br> 
->>    -   Supression des mesures $Dij0(t_{I})$  $\forall$ $t_{I} \in [0,00001; 0,28064[$<br><br>
->>    -   La moyenne glissante à pour formule :
->> $$Gap\\\_glis(t_{I}) = \sum_{i=I}^{I+8} Gap(t_{i})$$<br>
->>
->>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_2_d.png)<br><br>
->>
->></details>
->><details>
->>    <summary><b>Finalisation.</b></summary>
->>
->>- Insérer une colonne entre les colonnes **[D]** et  **[E]**, puis affecter le nom $time_{d}$ à la colonne **[E]**  <br>
->>  Calculer le décalage temporel : $time_{d} = time$ -  $t\\_offset$ <br>
->>
->>- Insérer la nouvelle courbe correspondant : <br>
->>    - Abcisses : $time_{d}$
->>    - Ordonnées : $Gap$, $Gap\\_glis$.<br><br> 
->>
->>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_2_e.png)<br><br>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_d.png)<br><br> 
 >>
 >></details>
 ></details>
@@ -192,5 +173,3 @@ Niveau ⭐⭐⭐
 >![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h5.png)<br>
 >
 </details>>
-
-
