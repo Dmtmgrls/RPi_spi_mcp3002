@@ -64,17 +64,17 @@ Niveau ⭐⭐⭐
 >>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_cbis.png)<br><br> 
 >>
 >>- **On constate que :**
->>    -  La partie correspond  $t_{I} \in [0.0; 0.7]$ le TMP36 est encore tenu.
->>    -  La partie correspond  $t_{I} \in [0.7; 1.4]$ le TMP36 est en cours d'être relâché.
->>       Le TMP36 étant monté sur une platine de test sans soudure, les mouvements perturbent les connexions.
->>    -  La partie correspond  $t_{I} \in [1.4, t_{60s}]$  le TMP36 n'est plus tenu.<br>
+>>    -  La partie où  $t_{I} \in [0.0; 0.7]$ le TMP36 est encore tenu, pas de problème.
+>>    -  La partie où  $t_{I} \in [0.7; 1.4]$ le TMP36 est en cours d'être relâché.
+>>       Le TMP36 étant monté sur une platine de test sans soudure, tous mouvements perturbent les connexions.
+>>    -  La partie où  $t_{I} \in [1.4, t_{60s}]$  le TMP36 n'est plus tenu, tout rentre dans l'ordre.<br>
 >>
->>- **Il faut donc :**
+>>- **Il faut donc modifier la référence temporelle :**
 >>   
 >>    -  ( 1 ) Insérer une colonne entre les colonnes **[D]** et  **[E]**.
 >>    -  ( 2 ) Affecter le nom $time_{d}$ à la colonne **[E]**
->>    -  ( 3 ) $\forall t_{I} \in [0.0001, t_{60s}]$  $E_{I} = D_{I} -  1.4$ secondes <br>
->>    -  ( 4 ) Supprimer les lignes des mesures antérieures à $t_{I} \lt 1,40023$ seconde
+>>    -  ( 3 ) $\forall t_{I} \in [0.0001, t_{60s}]$  $E_{I} = D_{I} -  1.40023$ secondes <br>
+>>    -  ( 4 ) Supprimer les lignes des mesures antérieures tel que $t_{I} \lt 1,40023$ seconde
 >>    -  ( 5 ) Puisque les valeurs $Dij0 = 24$ sont les plus représentatives, nous imposons  $\forall t_{I}$ $\in [0.0000, t_{60s}]$  $B_{I} = 224$<br>
 >>
 >>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_d.png)<br><br> 
@@ -88,46 +88,58 @@ Niveau ⭐⭐⭐
 >><details>
 >>    <summary><b>Ajout de la formule mathématique du model.</b></summary><br>
 >>
+>>- ( 1 ) Ecrire respectivement dans les cellules ***H3, H4, H5*** les labels  $\tau$, $\epsilon$ , $Gap\\\_glis\\\_Max$ <br>
+>>- ( 2 ) Nommer respectivement les cellules ***I3, I4, I5*** par __"Tau", "Epsilon" , "Gap_glis_Max"__ <br>
+>>- ( 2bis ) Écrire respectivement les cellules ***I3, I4, I5*** les valeurs  __10, 1 , 24__ <br>
+>>- ( 3 ) Donner à la cellule ***H8*** le titre _"model"_.
+>>- ( 3bis ) Les cellules $H_{k}$ continnent la formule  $=Gap\\\_glis\\\_Max * EXP(- E_{k} / (Tau))$<br><br>
 >>
->>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_2_g.png)<br><br>
+>>- **Ci-dessous les formules, et le résultat de ces formules :**     
 >>
->>- Ecrire respectivement dans les cellules ***H3, H4, H5*** les labels  $\tau$, $\epsilon$ , $Gap\\\_glis\\\_Max$ <br>
->>- Nommer respectivement les cellules ***I3, I4, I5*** par __"Tau", "Epsilon" , "Gap_glis_Max"__ <br>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_e.png)<br><br>
 >>
->>- Donner à la cellule ***H8*** le titre _"model"_.
->>- Les cellules $H_{k}$ continnent la formule  $=Gap\\\_glis\\\_Max * (1 - EXP(- E_{k} / (Tau)))$<br>
 >>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_ebis.png)<br><br>
 >>
 >></details>
 >>
 >><details>
 >>    <summary><b>Ajout des calculs des moindres carrés</b></summary><br>
 >>
->>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_2_g.png)<br><br>
->>
 >> Le principe est de minimiser la ***sommes des carrés des écart*** entre le _model_ et _la moyenne glissante_.<br>
 >> C'est à dire minimiser l'erreur en faisant varier la valeur de $\tau$ :
->>
->> $$erreur_{minimale} = \sum_{d=0}^{N} (model(time_{d}, \tau_{optimale})) - Gap\\\_glis(time_{d}))^{2}$$
 >>
 >> Pour simplifier la recherche manuelle de la valeur optimale de $\tau$ nous calculons l'effet de la variation de $\tau$ d'une valeur de $\pm\epsilon$:
 >>- $K_{d} = model(time_{d}, \tau -\epsilon)) - Gap\\\_glis(time_{d})$
 >>- $L_{d} = model(time_{d}, \tau )) - Gap\\\_glis(time_{d})$
 >>- $M_{d} = model(time_{d}, \tau +\epsilon)) - Gap\\\_glis(time_{d})$
->><br>
->> Les formules à placer dans les celleules seront donc :
+>>
+>> $$erreur_{minimale} = \sum_{d=0}^{N} (model(time_{d}, \tau_{optimale})) - Gap\\\_glis(time_{d}))^{2}$$
+>> 
+
+>>- **Les formules à placer dans les cellules sont celles-ci :**
 >>
 >>- Pour $i \in [9, N]$<br>
 >>
->>    -   Cellule **[Ki]** contient la formules Excel : $=(Gi-Gap\\_glis\\_Max*(1-exp(-Ei/(Tau-Epsilon))))^2$
->>    -   Cellule **[Li]** contient la formules Excel : $=(Gi-Hi)^2$
->>    -   Cellule **[Mi]** contient la formules Excel : $=(Gi-Gap\\_glis\\_Max*(1-exp(-Ei/(Tau+Epsilon))))^2$
+>>    -   Cellule **[Ki]** contient la formules Excel : $=(Gi-Gap\\_glis\\_Max*exp(-Ei/(Tau-Epsilon)))^2$
+>>    -   Cellule **[Li]** contient la formules Excel : $=(Gi--Gap\\_glis\\_Max*exp(-Ei/Tau))^2$
+>>    -   Cellule **[Mi]** contient la formules Excel : $=(Gi-Gap\\_glis\\_Max*exp(-Ei/(Tau+Epsilon)))^2$
 >>
->>- Pour les cellules **[K6], [L6], [M6]**, on calcul la somme des carrés.<br>
+>>- Pour les cellules **[K7], [L7], [M7]**, on calcul la somme des carrés.<br>
 >>
->>    -   Cellule **[K6]** contient la formules Excel : $=SOMME(K9:K_{N})$
->>    -   Cellule **[L6]** contient la formules Excel : $=SOMME(L9:L_{N})$
->>    -   Cellule **[M6]** contient la formules Excel : $=SOMME(M9:M_{N})$
+>>    -   Cellule **[K7]** contient la formules Excel : $=SOMME(K7:K_{N})$
+>>    -   Cellule **[L7]** contient la formules Excel : $=SOMME(L7:L_{N})$
+>>    -   Cellule **[M7]** contient la formules Excel : $=SOMME(M7:M_{N})$
+>>
+>>
+>>- **De façon à aboutir à ceci du point de vue des formules :** 
+>>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_f.png)<br><br>
+>>
+>>
+>>- **De façon à aboutir à ceci du point de vue des résultats :** 
+>>
+>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_fbis.png)<br><br>
 >>
 >></details>
 ></details>
@@ -140,16 +152,16 @@ Niveau ⭐⭐⭐
 >    <summary><b>Méthode d'estimation</b></summary><br>
 >
 >- Estimation initiale :
->    - Le temps de mesure est de 15 secondes, prenons arbitrairement $\tau = 10 \pm5 secondes$<br><br>
->![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h1.png)<br>
+>    - Le temps de mesure est de 60 secondes, prenons arbitrairement $\tau = 10 \pm5 secondes$<br><br>
+>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_g1.png)<br><br>
 >
 >- Estimation suivante : 
->    - Le résultat précédent nous indique que $\tau_{optimal}$ est entre **0 et 5 s**. Prenons arbitrairement $\tau = 2 \pm1 s$<br><br>
->![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h2.png)<br>
+>    - Le résultat précédent nous indique que $\tau_{optimal}$ est **> 15 s**. Prenons arbitrairement $\tau = 20 \pm4 s$<br><br>
+>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_g2.png)<br><br>
 >
 >- Estimation suivante : 
->    -  Le résultat précédent nous indique que $\tau_{optimal}$ est entre **3 et 5 s**. Prenons arbitrairement $\tau = 4 \pm0.5 s$<br><br>
->![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h3.png)<br>
+>    -  Le résultat précédent nous indique que $\tau_{optimal}$ est **> 24 s**. Prenons arbitrairement $\tau = 25 \pm0.5 s$<br><br>
+>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_g3.png)<br><br>
 >
 >- Estimation suivante :
 >    -  Le résultat précédent nous indique que $\tau_{optimal}$ est entre **3.5 et 4 s**. Prenons arbitrairements $\tau = 3.8 \pm0.1 s$<br>
@@ -157,7 +169,7 @@ Niveau ⭐⭐⭐
 >       
 >- Ainsi, on trouve que $\tau_{optimal}$ s'approche de la valeur $3,6809$ soit plus raisonablement $3.7 \pm 0.01$<br><br>
 >
->![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h4.png)<br>
+>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_g4.png)<br>
 >      
 ></details>
 >
@@ -172,4 +184,4 @@ Niveau ⭐⭐⭐
 > 
 >![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h5.png)<br>
 >
-</details>>
+</details>
