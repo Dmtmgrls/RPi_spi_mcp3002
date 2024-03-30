@@ -169,9 +169,8 @@ Niveau ⭐⭐⭐
 > 
 >![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_g4.png)<br>
 > 
->- Ainsi, on trouve que $\tau_{optimal}$ s'approche de la valeur $23 \pm0.5$ <br><br>
->
-     
+>- Ainsi, on trouve que $\tau_{optimal}$ s'approche de la valeur $23 \pm0.5$ secondes.<br><br>
+>  
 ></details>
 >
 ><details>
@@ -179,10 +178,10 @@ Niveau ⭐⭐⭐
 >
 >-  En bleu la courbe de $Gap(t_{d})$ correspondant aux mesures de la digitalisation.<br><br>
 >-  En rouge la courbe de la moyenne glissante des mesures qui permet de lisser les abérrations de mesures.<br><br>
->-  En vert la courbe de modélisation d'équation $Gap_{model}(t_{d}) = Gap\\\_glis\\\_Max*(1-\exp(-\frac{t_{d}}{\tau}))$ avec $Gap\\\_glis\\\_Max = 26 bits$<br><br>
->-  le carré noir représente le point modélisé correspondant au temps de réponse du TMP36 en monté en température.<br><br>
->   Ce point est obtenu pour $t_{d} = \tau$ c'est à dire $Gap_{model}(\tau) = Gap\\\_glis\\\_Max*(1-\exp(-1)) = 26*0.632 = 16.4 bits$<br><br>
+>-  En vert la courbe de modélisation d'équation $Gap_{model}(t_{d}) = Gap\\\_glis\\\_Max*exp(-\frac{t_{d}}{\tau})$ avec $Gap\\\_glis\\\_Max = 24 bits$<br><br>
+>-  le carré noir représente le point modélisé correspondant au temps de réponse du TMP36 en refroidissement.<br><br>
+>   Ce point est obtenu pour $t_{d} = \tau$ c'est à dire $Gap_{model}(\tau) = Gap\\\_glis\\\_Max*\exp(-1)= 24*0,368$ soit entre 8 et 9 bits<br><br>
 > 
->![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_warm_up_step_4_h5.png)<br>
+>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Excel_cooling_step_2_h.png)<br>
 >
 </details>
