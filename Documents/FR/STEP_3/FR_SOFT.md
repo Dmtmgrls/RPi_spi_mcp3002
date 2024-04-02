@@ -549,6 +549,43 @@ Niveau ⭐⭐⭐
 >> ![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/level3_ch0ch1_disconnected_test_2.png)
 >>
 >></details> 
+>>
+>><details>
+>>   <summary><b>Conclusion</b></summary>
+>>
+>>- ***Reproductibilité des mesures***<br>
+>>
+>>   - La phase de monté en température est très dépendante de la façon dont on tient le capteur de température.<br>
+>>     Après de nombreux essais, la valeur de $\tau = 3,7$ s trouvée initialement varie entre $2,8$ et $4,2$ secondes.<br>
+>>     Soit une ereur de $\pm20$%<br><br>
+>>
+>>   - La phase de refroidissement ne dépend plus de la façon de tenir le TMP36.<br>
+>>     Après de nombreux essais, la valeur de $\tau = 23$ s trouvée initialement varie entre $18,5$ et $23$ secondes.<br>
+>>     Soit une erreur de $\pm10$%<br><br>
+>>
+>>- ***Pourquoi les valeurs de*** $\tau$ ***sont différentes entre les deux phases.***<br>
+>>   - Le constructeur indique que thermiquement son composant peut être modélisé par une fonction de transfert à $deux$ $pôles$.<br>
+>>     Mais en fait cela peut se ramener à une fonction de transfert à seul pôle qui correspond au comportement thermique du boitier.<br>
+>>   - Donc selon la qualité du contact thermique entre la source chaude/froide et le boitier, les conditions ne sont pas les mêmes.
+>>     D'aileurs les courbes de mesure du constructeur indique les conditions de mesure : 
+>>       - Bain d'huile.
+>>       - Radiateur monté sur le TMP36.
+>>       - Refroidissement avec souflage d'air.<br>
+>>
+>>- ***Les précaution d'utilisation du TMP36.***
+>>   - Ce composant ne pourra pas mesurer des variation de température trop rapide.<br>
+>>     Il sera idéal pour mesurer la température d'un logement par exemple.<br>
+>>
+>>- ***Critique de cette méthode de mesure.***
+>>    - Nous avons réalisé un calcul sur des tensions numérisées.<br>
+>>      Ce qui a doublé l'erreurs dues au pas denumérisation ( $\pm2$ bits)<br>
+>>
+>>- ***Solution.***
+>>    - le MCP3002 à la posibilité de mesurer des grandeurs de façon différentielle.<br>
+>>      La numérisation se fait directement sur le signal analogique ($Canal_{1} - Canal_{0}$).<br>
+>>      Il n'y a plus de calcul à faire, et l'erreur due à la numérisation reste à  $\pm1$ bits.<br>
+>>      C'est l'objet du T.P. de niveau ⭐⭐⭐⭐
+>></details> 
 ></details>
 
 </details>
