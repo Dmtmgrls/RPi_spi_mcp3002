@@ -17,7 +17,7 @@ We are just Dwarves sitting on the shoulders of Giants.
 
 <br>
 
-## The objective of this document: To propose a T.P. using the SPI bus.
+## The objective of this document: To propose a pratical works using the SPI bus.
 ```
 This practical work is divided into 5 stages of increasing difficulty but which can be easily assimilated.
 The difficulty level is represented by the number of ⭐
@@ -140,3 +140,4 @@ Click on the small black arrow to expand the items.
 >- [Install the new program](./FR/STEP_5/FR_SOFT.md)
 >- [Tests and Observations](./FR/STEP_5/FR_TESTS.md)
 </details>
+
