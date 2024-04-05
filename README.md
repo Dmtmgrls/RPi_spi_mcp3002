@@ -12,9 +12,9 @@ This document summarizes everything I was able to learn on the WEB, about the ca
 <br>
 
 >-   **remains to be done**
->      -   [  ] In progress Proofreading   FR_README.md, difficulty level :star:  (0.0.1)<br>
->      -   [  ] In progress Create  FR_README.md, difficulty level :star::star:  (0.0.2)<br>
->      -   [  ] Create   FR_README.md, difficulty level :star::star::star:  (0.0.3)<br>
+>      -   [ o ] In progress Proofreading   FR_README.md, difficulty level :star:  (0.0.1)<br>
+>      -   [ o ] In progress Proofreading  FR_README.md, difficulty level :star::star:  (0.0.2)<br>
+>      -   [ o ] In progress Proofreading   FR_README.md, difficulty level :star::star::star:  (0.0.3)<br>
 >      -   [  ] Create   FR_README.md, difficulty level :star::star::star::star:  (0.0.4)<br>
 >      -   [  ] Translat FR_README.md into english, file EN_README.md. (0.1.0)<br>
 
@@ -30,4 +30,3 @@ cd my_test_dir
 python3 -m venv env
 source env/bin/activate
 ```
-
