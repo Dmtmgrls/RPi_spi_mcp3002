@@ -19,7 +19,7 @@ Nous ne sommes que des Nains assis sur les épaules de Géants.
 
 ## L'objectif de ce document : Proposer un T.P. utilisant le bus SPI.
 ```
-Ce TP est divisé en 4 étapes de difficultés croissantes mais assimilables facilement.
+Ce TP est divisé en 5 étapes de difficultés croissantes mais assimilables facilement.
 Le niveau de difficulté est réprésenté par le nombre d'⭐
 Ci-dessous nous indiquons les items abordées dans chacune des étapes.
 Cliquez sur la petite flèche noire pour développer les items.
@@ -61,6 +61,17 @@ Cliquez sur la petite flèche noire pour développer les items.
 >   - un seul CAN
 >- Analyser et comparer le comportement de chaque élément.
 >- Comprendre les défauts de l'échantillonage.<br>
+
+</details>
+
+<details>
+    <summary><b><i>Quatrième étape</i></b> :Montage à deux capteurs de T° et deux CAN.<br></summary>
+   
+>- Proposer un nouveau montage fonctionnel comportant :
+>   - deux capteurs de T°
+>   - deux CAN
+>- Analyser et comparer le comportement montage de niveau ⭐⭐⭐ en absolu et différentiel.
+>- Comprendre les défauts du calcul sur l'échantillonage.<br>
 
 </details>
 
@@ -115,11 +126,21 @@ Cliquez sur la petite flèche noire pour développer les items.
 </details>
 
 <details>
-<summary>DERNIERE ETAPE. :star::star::star::star:<br></summary>
+<summary>QUATRIEME ETAPE. :star::star::star::star:<br></summary>
 
 >- [Rassembler le matériel](./FR/STEP_4/FR_HARDWARE.md)
->- [Addressage des Devices](./FR/STEP_4/FR_DEVICES_ADDRESSING.md)
 >- [Nouveau cablage des composants](./FR/STEP_4/FR_WIRING.md)
+>- [Addressage des Cibles](./FR/STEP_4/FR_TARGET_ADDRESSING.md)
 >- [Installer le nouveau programme](./FR/STEP_4/FR_SOFT.md)
 >- [Tests et Observations](./FR/STEP_4/FR_TESTS.md)
+</details>
+
+<details>
+<summary>DERNIERE ETAPE. :star::star::star::star::star:<br></summary>
+
+>- [Rassembler le matériel](./FR/STEP_5/FR_HARDWARE.md)
+>- [Addressage des Devices](./FR/STEP_5/FR_DEVICES_ADDRESSING.md)
+>- [Nouveau cablage des composants](./FR/STEP_5/FR_WIRING.md)
+>- [Installer le nouveau programme](./FR/STEP_5/FR_SOFT.md)
+>- [Tests et Observations](./FR/STEP_5/FR_TESTS.md)
 </details>
