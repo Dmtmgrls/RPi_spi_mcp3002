@@ -54,7 +54,7 @@ Cliquez sur la petite flèche noire pour développer les items.
 </details>
 
 <details>
-    <summary><b><i>Troisième étape</i></b> :Montage à deux capteurs de T° et un seul CAN.<br></summary>
+    <summary><b><i>Troisième étape</i></b> : Montage à deux capteurs de T° et un seul CAN mode assymetrique (single-ended).<br></summary>
    
 >- Proposer un nouveau montage fonctionnel comportant :
 >   - deux capteurs de T°
@@ -65,13 +65,9 @@ Cliquez sur la petite flèche noire pour développer les items.
 </details>
 
 <details>
-    <summary><b><i>Quatrième étape</i></b> :Montage à deux capteurs de T° et deux CAN.<br></summary>
+    <summary><b><i>Quatrième étape</i></b> : Montage à deux capteurs de T° et un CAN en mode pseudo-différentiel<br></summary>
    
->- Proposer un nouveau montage fonctionnel comportant :
->   - deux capteurs de T°
->   - deux CAN
->- Analyser et comparer le comportement montage de niveau ⭐⭐⭐ en absolu et différentiel.
->- Comprendre les défauts du calcul sur l'échantillonage.<br>
+>- Analyser et comparer le comportement montage de niveau ⭐⭐⭐ en mode pseudo-différentiel.<br>
 
 </details>
 
@@ -98,7 +94,7 @@ Cliquez sur la petite flèche noire pour développer les items.
     Respectez l'ordre des étapes. Prenez le temps de vérifier. Prenez le temps de comprendre
 
 <details>
-<summary>PREMIERE ETAPE. :star:<br></summary>
+<summary>PREMIERE ÉTAPE. :star:<br></summary>
    
 >- [Rassembler le matériel](./FR/STEP_1/FR_HARDWARE.md)
 >- [Cablage des composants](./FR/STEP_1/FR_WIRING.md)
@@ -107,7 +103,7 @@ Cliquez sur la petite flèche noire pour développer les items.
 </details>
 
 <details>
-<summary>SECONDE ETAPE. :star::star:<br></summary>
+<summary>SECONDE ÉTAPE. :star::star:<br></summary>
    
 >- [Etude du bus SPI](./FR/STEP_2/FR_STUDY_SPI.md)
 >- [Etude du pakage **spidev**](./FR/STEP_2/FR_STUDY_SPIDEV.md)
@@ -116,7 +112,7 @@ Cliquez sur la petite flèche noire pour développer les items.
 </details>
 
 <details>
-<summary>TROISIEME ETAPE. :star::star::star:<br></summary>
+<summary>TROISIEME ÉTAPE. :star::star::star:<br></summary>
 
 >- [Rassembler le matériel](./FR/STEP_3/FR_HARDWARE.md)
 >- [Nouveau cablage des composants](./FR/STEP_3/FR_WIRING.md)
@@ -126,7 +122,7 @@ Cliquez sur la petite flèche noire pour développer les items.
 </details>
 
 <details>
-<summary>QUATRIEME ETAPE. :star::star::star::star:<br></summary>
+<summary>QUATRIEME ÉTAPE. :star::star::star::star:<br></summary>
 
 >- [Rassembler le matériel](./FR/STEP_4/FR_HARDWARE.md)
 >- [Nouveau cablage des composants](./FR/STEP_4/FR_WIRING.md)
@@ -136,7 +132,7 @@ Cliquez sur la petite flèche noire pour développer les items.
 </details>
 
 <details>
-<summary>DERNIERE ETAPE. :star::star::star::star::star:<br></summary>
+<summary>DERNIERE ÉTAPE. :star::star::star::star::star:<br></summary>
 
 >- [Rassembler le matériel](./FR/STEP_5/FR_HARDWARE.md)
 >- [Addressage des Devices](./FR/STEP_5/FR_DEVICES_ADDRESSING.md)
