@@ -1,266 +1,14 @@
 ### LES NOUVEAUX PROGRAMMES
-Niveau ⭐⭐⭐
+Niveau ⭐⭐⭐⭐
 <br><br>
-<details>
-   <summary>ETUDE DU MONTAGE AVEC $CH0$ RELIÉ à $CH1$ SUR LA MÊME SORTIE DU TMP36</summary><br>
 
-><details>
->  <summary>But de ce montage</summary><br>
->
->>- Ce montage va permettre d'observer le comportement des deux canaux en leur appliquant le même signal à leur entrée.<br><br>
->>    - Est-ce que la tension digitalisée est identique pour les deux canaux?<br><br>
->>    - S'il y a un écart entre les mesures, comment évolue cet écart au fils du temps?<br><br>
->>    - Lors de l'usage de la méthode $xfer2(List,$ $vitesse)$ que se passe t'il si à chaque mesure :
->>        - On maintient le paramettre $vitesse$ constant sur le canal ***CH0*** (ex. 4000Hz)
->>        - On modifie le paramettre $vitesse$ sur le canal ***CH1*** (ex. 8000Hz, 10.000Hz, 50.000Hz )
-></details>
-
-><details>
->  <summary>Les programmes de test</summary><br>
->
->><details>
->>   <summary>Observation de l'écart de mesure pour un même signal d'entrée à la vitesse constante de <b>4000Hz</b></summary><br>
->> 
->>><details>
->>>   <summary>Ce que fait le code</summary><br>
->>>
->>>- Toutes les 10 milisecondes une mesure est réalisée sur le canal ***CH0***, suivie d'une mesure sur le canal ***CH1***.<br>
->>>  Cet enchaînement s'appelle un ***couple de mesures***.
->>>- A chaque couple de mesures le compteur ***nb_mesures*** est incrémenté.
->>>- Les deux mesures du couple sont comparées :
->>>    - Si les deux mesures sont identiques rien n'est affiché.
->>>    - Si les deux mesures sont différentes en + ou en -, alors une ligne d'information est affichée.<br>
->>>      Le compteur nb_gap qui compte les couple distincts est incrémenté.<br><br>
->>>- Pour sortir du programme il faut taper $[Ctrl][c]$
->>><br><br>
->>>
->>>````
->>> CONTENU DE LA LIGNE D'INFORMATION 
->>>
->>> nb_measures = 4404    nb_gap =  32   Tch0 - Tch1 = -0.3223  p = 0.727 %
->>>
->>> où
->>>
->>> nb_measures      : c'est le nombre total (4404) de couples de mesures depuis le lancement du test.
->>> nb_gap           : c'est le nombre total (32) de couples de mesures distinctes depuis le lancement du test.
->>> Tch0 - TCH1      : c'est la différence de température (-0.3223 °C) entre les mesures d'un même couple.
->>> p en pourcentage : c'est la valeur (0.727 %)  du ratio = (nb_gap/nb_measures) x 100 en %.
->>>````
->>>
->>>
->>>- On remarque que :
->>>   - Les écarts de température digitalisée sont négatifs ou positifs (  nb_gap = 8 )
->>>   - les valeurs absolues des écarts sont égales. ($0.3223$)
->>>   - le ratio de températures digitalisées distinctes est très faible. ($<1$***%***)
->>>   - L'apparition d'un couple distinct semble alléatoire : <br>
->>>     Le temps séparant deux couple distincts n'est pas constants (  $\approx10ms * nb_{measures}$)
->>><br><br>
->>>
->>> ![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/level3_ch0ch1_connected_test_1.png)<br><br> 
->>></details>
->>>
->>><details>
->>>   <summary>Le code</summary><br>
->>>
->>>````python
->>>import spidev
->>>import time
->>>
->>>#Constants & parameters
->>>CE0       = 0  #  CE0  of  RPiB3+ connected on  CS of MCP3002
->>>SPI_BUS_0 = 0  #  system device either /dev/spidev0.0  or  /dev/spidev0.1
->>>
->>>SPEED_STANDAR = 4000    # Hz
->>>REQUEST_CH0 = [ 0x60, 0x00 ] # query to obtain the digitalization voltage on CH0
->>>REQUEST_CH1 = [ 0x70, 0x00 ] # query to obtain the digitalization voltage on CH0
->>>
->>>RESOLUTION    =  10             # bits
->>>NB_OF_SAMPLES = 2**RESOLUTION
->>>OFFSET        =  500.0          # mV
->>>V_REF         = 3300.0          # mV
->>>SENSIBILITE   =   10.0          # mV/°C
->>>
->>># Create instance
->>>spi = spidev.SpiDev()
->>>
->>># Open /dev/spidev0.0  with   CE0 -> CS of MCP3002
->>>spi.open( SPI_BUS_0, CE0 )
->>>
->>>#  Return the digitalized temperature directly
->>>def get_digit_temp( request, speed ):
->>>   digitalValue = spi.xfer2( request , speed)
->>>   digitalTension = (digitalValue[0] <<8 | digitalValue[1])  * V_REF / NB_OF_SAMPLES
->>>   digitalTemperature = (digitalTension - OFFSET) / SENSIBILITE
->>>   return digitalTemperature
->>>
->>># Main
->>>#------
->>>nb_measures = 1
->>>nb_gap = 0
->>>
->>>try:
->>>   # Type [CTRL][C] to exit from loop
->>>   while True:
->>>      request = REQUEST_CH0[:]
->>>      digitalTemperatureCh0 = get_digit_temp(request, SPEED_STANDAR )
->>>#      print( f"TCh0 = {digitalTemperatureCh0:5.3f}")
->>>
->>>      request = REQUEST_CH1[:]
->>>      digitalTemperatureCh1 = get_digit_temp(request, SPEED_STANDAR )
->>>#      print( f"TCh1 = {digitalTemperatureCh1:5.3f}")
->>>
->>>      #
->>>      gap = digitalTemperatureCh0 - digitalTemperatureCh1
->>>#      gap = 0
->>>      if gap != 0 :
->>>          nb_gap = nb_gap + 1
->>>          if gap > 0 :
->>>              print(f"measure n°{nb_measures:7} nb_gap = {nb_gap:7}   Tch0 - Tch1 = +{gap:2.4f}  p = {nb_gap*100/nb_measures:4.3} %")
->>>          else:
->>>              print(f"measure n°{nb_measures:7} nb_gap = {nb_gap:7}   Tch0 - Tch1 = -{abs(gap):2.4f}  p = {nb_gap*100/nb_measures:4.3} %")
->>>
->>>      nb_measures = nb_measures + 1
->>>      time.sleep(0.01)                               # wait one second
->>>
->>>except:
->>>   print(f"\n\nmeasure n°{nb_measures:<7} nb_gap = {nb_gap:<7}  p = {nb_gap*100/nb_measures:4.3} <br><br>\n\n " )
->>>````
->>></details>
->>>
->>><details>
->>>   <summary>Pourquoi y a t'il un écart systématique de 0.3223 °C ?</summary><br>
->>>
->>>- La valeur du $gap$ est : <br>
->>>    - $gap = digitalTemperature_{ch0} - digitalTemperature_{ch1}$.<br><br>
->>>    - $gap = (\frac{(digitalTension_{ch0} - OFFSET)}{SENSIBILITE}) - (\frac{(digitalTension_{ch1} - OFFSET)}{SENSIBILITE})$<br><br>
->>>    - $gap = \frac{(digitalTension_{ch0} - digitalTension_{ch1}}{SENSIBILITE}$<br><br>
->>>    - $gap = \frac{(digitalTension_{ch0} - digitalTension_{ch1}}{SENSIBILITE}$<br><br>
->>>- Or<br>
->>>
->>>    -  $digitalTension = (digitalValue[0] <<8 | digitalValue[1])  * \frac{V_{REF}}{NB_{OFSAMPLES}}$
->>>    -  $digitalTension = (digitalValue[0] <<8 | digitalValue[1])  * \frac{3300}{1024}$
->>>    -  $digitalTension = (digitalValue[0] <<8 | digitalValue[1])  * 3,222656$<br><br>
->>>- Ecrivons : <br>                                   
->>>    -  $digitalTension_{CH0} \approx digit_{CH0} * 3,222656...$
->>>    -  $digitalTension_{CH1} \approx{digit_{CH1}} * 3,222656...$<br><br>
->>>- Alors
->>>    - $gap = \frac{(digit_{CH0} * 0,3222656) - digit_{CH1} * 3,222656)}{SENSIBILITE}$<br><br>
->>>    - $gap = \frac{(digit_{CH0} -  digit_{CH1}) * 3,222656}{10}$<br><br>
->>>    - $gap = (digit_{CH0} -  digit_{CH1}) * 0,3222656$<br><br>
->>>- Par conséquent :
->>>    - ***Si*** $gap = \pm{0,3223}$ soit $\approx{\pm{0,3222656...}} \implies{digit_{CH0} - digit_{CH1}} = \pm{1}$ $bit$ $soit$ $\pm{1}$ $LSB$<br><br>
->>>
->>>- C'est exactement ce qu'indiquent les caractéristiques du constructeur à la rubrique ***ACCURACY*** :<br><br>
->>>
->>> ![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/level3_ch0ch1_connected_test_1_Accuracy.png)<br><br> 
->>></details>
->>
->></details>
->>
->><details>
->>   <summary>Observation de l'effet du paramettre $vitesse$ sur les mesures</summary><br>
->> 
->>><details>
->>>   <summary>Ce que fait le code</summary><br>
->>>
->>>- Toutes les secondes une mesure est réalisée sur le canal ***CH0***, suivie d'une mesure sur le canal ***CH1***.<br>
->>>  Cet enchaînement s'appelle un ***couple de mesures***.
->>>- Le canal ***CH0*** est la référence. La vitesse de digitalisation appliquée est toujours de $4000 Hz$.
->>>- Par contre la vitesse de digitalisation varie à chaque mesure sur le canal ***CH1***
->>>- A chaque couple de mesures une ligne s'affiche comme ci-dessous.
->>>  Il y a deux séries de mesures représentées côte à côte)
->>><br><br>
->>>
->>> ![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/level3_ch0ch1_connected_test_2.png)<br><br> 
->>>
->>>- On remarque que :
->>>   - Les écarts de température dépendent de la vitesse
->>>   - la valeur absolue d'un écart qui est égale à ($0.3223$) ou à $0$ indique un couple de mesures correct.
->>>   - la valeur absolue d'un écart qui est supérieure à ($0.3223$) indique un couple de mesures ***incorrect***.<br>
->>>     La vitesse n'est pas adaptée.<br><br>
->>>- On en conclu que si $vitesse \in [400Hz, 40KHz]$ il est certain que la digitalisation est fiable.<br><br>
->>></details>   
->>>
->>><details>
->>>   <summary>Le code</summary><br>
->>>
->>>````python
->>>import spidev
->>>import time
->>>
->>>#Constants & parameters
->>>CE0       = 0  #  CE0  of  RPiB3+ connected on  CS of MCP3002
->>>SPI_BUS_0 = 0  #  system device either /dev/spidev0.0  or  /dev/spidev0.1
->>>
->>>SPEED_STANDAR = 4000    # Hz
->>>REQUEST_CH0 = [ 0x60, 0x00 ] # query to obtain the digitalization voltage on CH0
->>>REQUEST_CH1 = [ 0x70, 0x00 ] # query to obtain the digitalization voltage on CH0
->>>
->>>RESOLUTION    =  10             # bits
->>>NB_OF_SAMPLES = 2**RESOLUTION
->>>OFFSET        =  500.0          # mV
->>>V_REF         = 3300.0          # mV
->>>SENSIBILITE   =   10.0          # mV/°C
->>>
->>># Create instance
->>>spi = spidev.SpiDev()
->>>
->>># Open /dev/spidev0.0  with   CE0 -> CS of MCP3002
->>>spi.open( SPI_BUS_0, CE0 )
->>>
->>>#  Return the digitalized temperature directly
->>>def get_digit_temp( request, speed ):
->>>  digitalValue = spi.xfer2( request , speed)
->>>  digitalTension = (digitalValue[0] <<8 | digitalValue[1])  * V_REF / NB_OF_SAMPLES
->>>  digitalTemperature = (digitalTension - OFFSET) / SENSIBILITE
->>>  return digitalTemperature
->>>
->>># Main
->>>#------
->>>print("\n\n   Speed      TCH0  \t TCH1\t   GAP")
->>>print("   (Hz)       (°C)\t (°C)\t   (°C)")
->>>print("----------------------------------------------")
->>>
->>> # From 4Hz to 32MHz
->>>for speed in [ 2, 4, 20, 40, 200, 400, 2000, 4000, 20000, 32000, 40000, 64000, 80000, 160000, 200000, 400000, 2000000, 4000000, 20000000, 32000000 ] :
->>>    request = REQUEST_CH0[:]
->>>    digitalTemperatureCh0 = get_digit_temp(request, SPEED_STANDAR )
->>>
->>>    request = REQUEST_CH1[:]
->>>    digitalTemperatureCh1 = get_digit_temp(request, speed )
->>>
->>>    # Tag the reference speed
->>>    if speed == 4000:
->>>        print( f"{speed:8.0f} ref ", end = '')
->>>    else:
->>>        print( f"{speed:8.0f}     ", end = '')
->>>
->>>    print( f"{digitalTemperatureCh0:5.3f}\t{digitalTemperatureCh1:5.3f}\t", end ='')
->>>    gap = digitalTemperatureCh0 - digitalTemperatureCh1
->>>    if gap > 0 :
->>>        print(f"+{gap:2.4f}  ")
->>>    else:
->>>        print(f"-{abs(gap):2.4f} ")
->>>
->>>    time.sleep(1.0)                               # wait one second
->>>print()
->>>````
->>>
->>></details> 
->></details>
->>
->></details>
->   
-></details>
-
-</details>
 <details>
    <summary>ETUDE DU MONTAGE AVEC $CH0$ et  $CH1$ CONNECTÉS A DES TMP36 DIFFÉRENTS</summary><br>
 
 ><details>
 >  <summary><b>But de ce montage.</b></summary><br>
 >
->- Ce montage va permettre d'observer le comportement des deux TMP36.<br><br>
+>- Ce montage va permettre d'observer le comportement du MCP3002 en mode $différentiel$ et $asymétrique$.<br><br>
 >   - A température constantes quelles mesures obtient on pour chaque TMP36?<br><br>
 >   - A température variable quelles sont les constantes de temps obtenues?
 ></details>
@@ -275,8 +23,11 @@ Niveau ⭐⭐⭐
 >
 >><details>
 >>   <summary><b>Principe.</b></summary><br>
->>Dans cette partie du T.P. nous voulons une estimation du temps de réponse thermique du $TMP36$.<br>
->>Le montage à deux TMP36 permet cela :<br>
+>>Dans le T.P de niveau ⭐⭐⭐ nous avons évalué le temps de réponse thermique du $TMP36$ en mode $Asymétrique$.<br>
+>>Dans le T.P de niveau ⭐⭐⭐ nous allons :<br>
+>>- évalué le temps de réponse thermique du $TMP36$ en mode $Asymétrique$.
+>>- Comparer les résultats entre les deux modes.<br>
+>>Comme pour le T.P. de niveau ⭐⭐⭐ :<br>
 >>
 >>  - Nous prendrons le TMP36 du canal 0 comme référence de température (quasi constante).<br>
 >>  - Nous ferons évoluer uniquement la température du TMP36 du canal 1.<br>
@@ -292,7 +43,7 @@ Niveau ⭐⭐⭐
 >>
 >>- Phase de ***refroidissement*** : <br>
 >>     -5 On relache le $TMP36$$<br>
->>     -6 Au bout de 60 secondes le programme affiche un message de fin de mesures.<br>
+>>     -6 Au bout de 70 secondes le programme affiche un message de fin de mesures.<br>
 >>
 >>- Phase d'***enregistrement des résultats*** : <br>
 >>     -7 Les mesures de la phase 1 sont copiées dans **mesure_rise.txt** du répertoire courant.<br>
@@ -309,8 +60,8 @@ Niveau ⭐⭐⭐
 >>>- Lors de la phase de montée en température il faudra absolument éviter de toucher le TMP36 de référence.<br>
 >>>
 >>>- Il faut faire le maximum de mesure dans le temps imparti, et réduire au maximum le temps de digitalisation.<br>
->>>     - Le temps choisi entre deux mesures est de $10$ $ms$.<br>
->>>     - La fréquence d'horloge ***SPI*** choisie est de $40$ $KHz$.<br>
+>>>     - Le temps choisi entre deux mesures est de $50$ $ms$.<br>
+>>>     - La fréquence d'horloge ***SPI*** choisie est de $10$ $KHz$.<br>
 >>>
 >>>- Le code n'étant pas compilé, celui-ci doit être le plus efficace possible.<br>
 >>>     - Code minimaliste.<br>
@@ -318,27 +69,31 @@ Niveau ⭐⭐⭐
 >>>     - Pas d'enregistrement des résultats de mesures dans un fichier au fils des mesures. <br>
 >>>
 >>>- Du fait que la mesure de température est calculée à partir de la digitalisation fournie par le MCP3002<br>
->>>  il n'est pas nécessaire de mémoriser les température ( float ) mais uniquement le code de digitalisation ( octet )
->>>     - Le code doit mémoriser les valeurs $Dij0$ et $Dij1$ obtenues respectivement sur ***CH0*** et ***CH1*** du **MCP3002**.<br>
+>>>  il n'est pas nécessaire de mémoriser les température ( float ) mais uniquement le code de digitalisation ( octet )<br>
+>>>  La préfix $Dig$ ::= $Digitalisation$
+>>>     - Le code doit mémoriser les valeurs $Dig_{0}$ et $Dig_{Diff1}$ obtenues respectivement sur ***CH0*** et ***CH1*** du **MCP3002**.<br>
+>>>     - Le code doit mémoriser les valeurs $Dig_{Diff0}$ obtenue respectivement sur ***CH+*** et ***CH-*** du **MCP3002**.<br>
+>>>     - Le code doit mémoriser les valeurs $Dig_{Diff1}$ obtenue respectivement sur ***CH-*** et ***CH+*** du **MCP3002**.<br>
 >>>     - Le code doit mémoriser la référence temporelle associée issue de l'horloge système. <br>
 >>>
->>>- Chaque mesure aura 3 champs de données.<br>
->>>     - Les deux premiers champs correspondent à $Dij0$ et $Dij1$; dans cet ordre.<br>
->>>     - Le dernier champ est la référence temporelle correspondant au début de la digitalisation sur le canal ***CH1***.<br>
->>>       Cette référence ne sera pas absolue, mais le temps écoulé depuis la première mesure.
->>>     - Les champs seront séparés par le caractère $;$<br>
+>>>- Chaque mesure aura 5 champs de données.<br>
+>>>     - Le premier champ est la référence temporelle correspondant au début de la digitalisation sur le canal ***CH1***.<br>
+>>>       Cette référence ne sera pas absolue, mais correspondra au temps écoulé depuis la première mesure.   
+>>>     - Les deux champs suivants correspondent à $Dig_{0}$ et $Dig_{1}$; dans cet ordre, au mode $Asymétrique$.<br>
+>>>     - Les deux champs suivants correspondent à $Dig_{Diff0}$ et $Dig_{Diff1}$; dans cet ordre, au mode $Différentiel$.<br>
+>>>     - Les champs seront séparés par le caractère virgule $,$<br>
 >>>
->>>     -  $mesure(t_{I}) ::= Dij0(t_{I})$ $;$ $Dij1(t_{I})$ $;$ $t_{I}$ 
+>>>     -  $mesure(t_{I})$ ::= $t_{I}$ $,$ $Dig_{0}(t_{I})$ $,$ $Dig_{1}(t_{I})$ $,$  $Dig_{Diff0}(t_{I})$ $,$ $Dig_{Diff1}(t_{I})$
 >>></details>
 >>>
 >>><details>
 >>>   <summary><b>Prétraitement des données avant l'interprétation des mesures.</b></summary><br>
 >>>
->>>- Sachant que la digitalisation est à $\pm1$ bit il faudra ***normaliser/corriger*** les champs $Dij0$ et $Dij1$:<br><br>
->>>    - Si pour $t_{I} \in [t_{0},t_{FINAL}]$ $Dij0(t_{I}) = M$  mais que $\exists$ quelques $t_{Q} \subset [t_{0},t_{FINAL}]$ tel que  $Dij0(t_{Q}) = M\pm1$<br>
->>>          alors il faut corriger $Dij0(t_{Q}) = M$.<br><br>
->>>     - Si pour $t_{I} \in [t_{a},t_{b}]$ $Dij1(t_{I}) = N$  mais que $\exists$ quelques $t_{P} \subset [t_{a},t_{b}]$ tel que  $Dij1(t_{P}) = N\pm1$<br>
->>>       alors il faut corriger $Dij1(t_{P}) = N$.<br>
+>>>- Sachant que la digitalisation est à $\pm1$ bit il faudra ***normaliser/corriger*** les champs $Dig0$ et $Dig1$:<br><br>
+>>>    - Si pour $t_{I} \in [t_{0},t_{FINAL}]$ $Dig0(t_{I}) = M$  mais que $\exists$ quelques $t_{Q} \subset [t_{0},t_{FINAL}]$ tel que  $Dig0(t_{Q}) = M\pm1$<br>
+>>>          alors il faut corriger $Dig0(t_{Q}) = M$.<br><br>
+>>>     - Si pour $t_{I} \in [t_{a},t_{b}]$ $Dig1(t_{I}) = N$  mais que $\exists$ quelques $t_{P} \subset [t_{a},t_{b}]$ tel que  $Dig1(t_{P}) = N\pm1$<br>
+>>>       alors il faut corriger $Dig1(t_{P}) = N$.<br>
 >>></details>
 >>>
 >>><details>
@@ -399,7 +154,7 @@ Niveau ⭐⭐⭐
 >>>
 >>>````
 >>>==> mesure_rise.txt <==
->>>Dij0;Dij1;time
+>>>Dig0;Dig1;time
 >>>208;  213;0.00001 
 >>>207;  212;0.01036
 >>>206;  212;0.02057
@@ -416,7 +171,7 @@ Niveau ⭐⭐⭐
 >>>220;  245;15.00163   
 >>>
 >>>==> mesure_cooling.txt <==
->>>Dij0;Dij1;time
+>>>Dig0;Dig1;time
 >>>220;  245;0.00001    
 >>>220;  245;0.01038
 >>>220;  245;0.02076
@@ -458,7 +213,7 @@ Niveau ⭐⭐⭐
 >>TIME_PHASE_RISING  = 15.0       # second
 >>TIME_PHASE_COOLING = 60.0       # second
 >>WAITING_TIME       = 0.00863    # second to obtain 10 ms beetwen 2 maesures
->>TITLE              = "Dij0;Dij1;time\n"
+>>TITLE              = "Dig0;Dig1;time\n"
 >>
 >># Create instance
 >>spi = spidev.SpiDev()
@@ -542,7 +297,7 @@ Niveau ⭐⭐⭐
 >>
 >>- On peut déjà donné un exemple de traitement correspondant à la phase de monté en température :<br><br>
 >>
->>    - En bleu les mesures du $Gap(t_{i})=Dij1(t_{i})-Dij0(t_{i})$  exprimée en bits.<br>
+>>    - En bleu les mesures du $Gap(t_{i})=Dig1(t_{i})-Dig0(t_{i})$  exprimée en bits.<br>
 >>    - En rouge la fonction $y_{Model}(t)=N*(1-(\exp(-\frac{t}{\tau}))$ de la modélisation. Avec $N=22$ bits, et $\tau=3,1255$)
 >>    - Le carré vert correspond à $y(\tau)=63,2$ % de $N$ soit $14$ bits.<br><br>
 >> 
