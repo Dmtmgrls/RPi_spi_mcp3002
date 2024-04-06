@@ -1,4 +1,4 @@
-### RASSEMBLER LE MATÉRIEL ⭐⭐⭐
+### RASSEMBLER LE MATÉRIEL ⭐⭐⭐⭐
 
 - Pour cette étape nous allons utiliser :
      -  un ***Paspberry 3B+***<br>
