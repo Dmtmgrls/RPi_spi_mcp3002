@@ -8,11 +8,11 @@ Niveau ⭐⭐⭐⭐
 ><details>
 >  <summary><b>But de ce montage.</b></summary><br>
 >
->- Ce montage va permettre d'observer le comportement du MCP3002 en mode $différentiel$ et $asymétrique$.<br><br>
+>- Ce montage permet d'observer le comportement du **MCP3002** en mode $différentiel$ et $asymétrique$.<br><br>
 >   - A température constantes quelles mesures obtient on pour chaque TMP36?<br><br>
 >   - A température variable quelles sont les constantes de temps obtenues?
 ></details>
-
+>
 ><details>
 >  <summary><b>Cas à température constante.</b></summary><br>
 >   - A développer.
@@ -23,31 +23,35 @@ Niveau ⭐⭐⭐⭐
 >
 >><details>
 >>   <summary><b>Principe.</b></summary><br>
->>Dans le T.P de niveau ⭐⭐⭐ nous avons évalué le temps de réponse thermique du $TMP36$ en mode $Asymétrique$.<br>
->>Dans le T.P de niveau ⭐⭐⭐ nous allons :<br>
->>- évalué le temps de réponse thermique du $TMP36$ en mode $Asymétrique$.
->>- Comparer les résultats entre les deux modes.<br>
->>Comme pour le T.P. de niveau ⭐⭐⭐ :<br>
 >>
->>  - Nous prendrons le TMP36 du canal 0 comme référence de température (quasi constante).<br>
->>  - Nous ferons évoluer uniquement la température du TMP36 du canal 1.<br>
+>>-   Nous allons reprendre exactement ce qui a été fait dans le T.P de niveau ⭐⭐⭐ dans le cas de la température variable.<br>
+>>    La différence tient au fait que chaque mesure sera réalisée "***simultanément***" en mode $Asymétrique$ et $Différentiel$.<br>
+>>    Ainsi dans le T.P de niveau ⭐⭐⭐⭐ :<br>
 >>
->>La comparaison des températures mesurées au fils du temps permet d'obtenir le temps de réponse.<br><br>
+>>     -   Nous prendrons le TMP36 du canal $0$ comme référence de température (quasi constante).<br>
+>>     -   Nous ferons évoluer uniquement la température du TMP36 du canal $1$.<br><br>
 >>
->>Les mesures se déroulerons de la façon suivante :<br><br>
->>- Phase de ***montée en température*** : <br>
->>     -1 On laisse les deux $TMP36$ se stabiliser.<br>
->>     -2 On lance le programme de mesure.<br>
->>     -3 On chauffe avec les doigts le $TMP36$ connecté sur le canal ***CH1***.<br>
->>     -4 Au bout de 15 secondes le programme affiche un message indiquant que l'on passe en mode refroidissement.<br>
+>>-   A partir des mesures :<br>
 >>
->>- Phase de ***refroidissement*** : <br>
->>     -5 On relache le $TMP36$$<br>
->>     -6 Au bout de 70 secondes le programme affiche un message de fin de mesures.<br>
+>>     -   Nous modéliserons le comportement du TMP36.<br>
+>>     -   Nous déterminerons le temps de réponse thermique du TMP36.<br>
+>>     -   Nous vérifierons s'il y a divergence entre le mode $asymétrique$ et le mode $différentiel$.<br><br>
 >>
->>- Phase d'***enregistrement des résultats*** : <br>
->>     -7 Les mesures de la phase 1 sont copiées dans **mesure_rise.txt** du répertoire courant.<br>
->>     -8 Les mesures de la phase 2 sont copiées dans **mesure_cooling.txt** du répertoire courant.<br> 
+>>-  Les mesures se déroulerons de la façon suivante :<br>
+>>
+>>    -   Phase $1$ : ***montée en température*** : <br>
+>>       -1    On laisse les deux $TMP36$ se stabiliser.<br>
+>>       -2    On lance le programme de mesure.<br>
+>>       -3    On chauffe avec les doigts le $TMP36$ connecté sur le canal ***CH1***.<br>
+>>       -4    Au bout de 15 secondes le programme affiche un message indiquant que l'on passe en mode refroidissement.<br>
+>>
+>>    -   Phase $2$ : ***refroidissement*** : <br>
+>>       -5 On relache le $TMP36$$<br>
+>>       -6 Au bout de 70 secondes le programme affiche un message de fin de mesures.<br>
+>>
+>>    -   Phase $3$ : ***enregistrement des résultats*** : <br>
+>>       -7 Les mesures de la phase 1 sont copiées dans **mesure_rise.txt** du répertoire courant.<br>
+>>       -8 Les mesures de la phase 2 sont copiées dans **mesure_cooling.txt** du répertoire courant.<br> 
 >></details>   
 >>
 >><details>
@@ -70,7 +74,7 @@ Niveau ⭐⭐⭐⭐
 >>>
 >>>- Du fait que la mesure de température est calculée à partir de la digitalisation fournie par le MCP3002<br>
 >>>  il n'est pas nécessaire de mémoriser les température ( float ) mais uniquement le code de digitalisation ( octet )<br>
->>>  La préfix $Dig$ ::= $Digitalisation$
+>>>  (ici le préfix $Dig$ signifie $Digitalisation$
 >>>     - Le code doit mémoriser les valeurs $Dig_{0}$ et $Dig_{Diff1}$ obtenues respectivement sur ***CH0*** et ***CH1*** du **MCP3002**.<br>
 >>>     - Le code doit mémoriser les valeurs $Dig_{Diff0}$ obtenue respectivement sur ***CH+*** et ***CH-*** du **MCP3002**.<br>
 >>>     - Le code doit mémoriser les valeurs $Dig_{Diff1}$ obtenue respectivement sur ***CH-*** et ***CH+*** du **MCP3002**.<br>
