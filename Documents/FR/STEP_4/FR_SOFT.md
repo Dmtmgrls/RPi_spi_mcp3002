@@ -71,31 +71,48 @@ Niveau ⭐⭐⭐⭐
 >>>     - Code minimaliste.<br>
 >>>     - Pas d'affichage des résultats à l'écran au fils des mesures.<br>
 >>>     - Pas d'enregistrement des résultats de mesures dans un fichier au fils des mesures. <br>
+>>></details>
+>>>
+>>><details>
+>>>   <summary><b>Quelles sont les mesures? .</b></summary><br>
 >>>
 >>>- Du fait que la mesure de température est calculée à partir de la digitalisation fournie par le MCP3002<br>
 >>>  il n'est pas nécessaire de mémoriser les températures ( float ) mais uniquement le code de digitalisation ( octet )<br>
->>>  (ici le préfix $Dig$ signifie $Digitalisation$)
->>>     - Le code doit mémoriser les valeurs $Dig_{0}$ et $Dig_{Diff1}$ obtenues respectivement sur ***CH0*** et ***CH1*** du **MCP3002**.<br>
+>>>  (ici le préfix $Dig$ signifie $Digitalisation$)<br>
+>>>
+>>>     - Le code doit mémoriser la référence temporelle associée issue de l'horloge système. <br>
+>>>     - Le code doit mémoriser les valeurs $Dig_{0}$ et $Dig_{1}$ obtenues respectivement sur ***CH0*** et ***CH1*** du **MCP3002**.<br>
 >>>     - Le code doit mémoriser les valeurs $Dig_{Diff0}$ obtenue respectivement sur ***CH+*** et ***CH-*** du **MCP3002**.<br>
 >>>     - Le code doit mémoriser les valeurs $Dig_{Diff1}$ obtenue respectivement sur ***CH-*** et ***CH+*** du **MCP3002**.<br>
->>>     - Le code doit mémoriser la référence temporelle associée issue de l'horloge système. <br>
 >>>
 >>>- Chaque mesure correspondra à 4 numérisations faites dans l'ordre suivant :<br>
 >>>    - digitalisation asymétrique sur $CH1$<br> 
 >>>    - digitalisation différentielle sur $CH0+$.<br>
 >>>    - digitalisation différentielle sur $CH1+$.<br>
 >>>    - digitalisation asymétrique sur $CH0$<br>
+>>></details>
 >>>
->>>- Chaque mesure aura 6 champs de données.<br>
->>>     - Le premier champ nommé ***time*** correspond à la référence temporelle de la mesure.<br>
->>>       Entre chaque mesure s'écoulera un délais de 50 ms environ.<br>
->>>       La référence remporelle est relative à la première mesure prise comme origine $time = 0$.<br>  
->>>     - Les deux champs suivants nommés $Dig_{0}$ et $Dig_{1}$ dans cet ordre, correspondent au mode $Asymétrique$.<br>
->>>     - le champ suivant nommé  $Delta$ correspond à la soustraction : $Dig_{1} - Dig_{0}$
->>>     - Les deux champs suivants nommés $Dig_{Diff0}$ et $Dig_{Diff1}$ dans cet ordre, correspondent au mode $Différentiel$.<br>
->>>     - Tous les champs seront séparés par le caractère virgule $,$<br>
+>>><details>
+>>>   <summary><b>Quelles sont les champs des fichiers de sortie? .</b></summary><br>
 >>>
->>>     -  $mesure(t_{I})$ ::= $t_{I}$ $,$ $Dig_{0}(t_{I})$ $,$ $Dig_{1}(t_{I})$ $,$ $Delta(t_{I})$ $,$  $Dig_{Diff0}(t_{I})$ $,$ $Dig_{Diff1}(t_{I})$
+>>>-  Sachant que les données seront traitées dans un tableur (Excel), à chaque mesure nous aurons :<br>
+>>>
+>>>    -  <b><ins>5 champs de données : </ins></b> (rang, libellé)<br>
+>>>       - 1 <b>time</b> : La référence temporel de la mesure. Entre chaque mesure s'écoulera un délais de 50 ms environ.<br>
+>>>       - 3 <b>Dig_0</b> : La digitalisation $Dig_{0}$ du canal $0$ en mode asymétrique.<br>
+>>>       - 4 <b>Dig_1</b> : La digitalisation $Dig_{1}$ du canal $1$ en mode asymétrique.<br>
+>>>       - 8 <b>Dig_Diff0</b> : La digitalisation $Dig_{Diff0}$ du canal $CH0+$ en mode différentiel.<br>
+>>>       - 9 <b>Dig_Diff1</b> : La digitalisation $Dig_{Diff1} du canal $CH1+$ en mode différentiel.<br>      
+>>>
+>>>    -  <b><ins>6 champs de calcul : </ins></b>(rang, libellé)<br>
+>>>       - 2 <b>time_D</b> : La référence temporelle après un décalge temporel pour éliminer les premières mesures.<br>
+>>>       - 5 <b>Delta</b> : pour le calcul de  $Dig_{1} - Dig_{0}$.<br>
+>>>       - 6 <b>Model_Asym</b> : pour le calcul du model en mode asymétrique.<br>
+>>>       - 7 <b>Ecart</b>: pour le calcul des moindres carrés.<br> 
+>>>       - 10 <b>Model_Diff</b> : pour le calcul du model en mode différentiel<br>
+>>>       - 11 <b>Ecart</b> : pour le calcul des moindres carrés.<br> 
+>>>
+>>>   - Tous les champs seront séparés par le caractère virgule $,$<br>
 >>></details>
 >>>
 >>><details>
