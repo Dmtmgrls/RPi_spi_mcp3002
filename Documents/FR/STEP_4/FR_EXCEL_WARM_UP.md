@@ -1,6 +1,6 @@
 ### EXPLOITATION DES MESURES DANS LA PHASE MONTÉ EN TEMPÉRATURE
 
-Niveau ⭐⭐⭐
+Niveau ⭐⭐⭐⭐
 
 <details>
      <summary><b>Etapes de traitement des données</b></summary><br>
@@ -11,19 +11,19 @@ Niveau ⭐⭐⭐
 > Ouvrir $Excel$ et charger le fichier $mesure\\_ rise.txt$.<br>
 > Il faut pré-formater ce fichier sur les 3 aspects suivants :<br>
 >
->   - Les champs du fichier sont délimités par le caractère point-virgule $;$.
->   - Le fichier contient une en-tête $Dij0; Dij1; time$.
+>   - Les champs du fichier sont délimités par le caractère ***virgule*** $,$.
+>   - Le fichier contient l'en-tête ***time , Dig_0 , Dig_1  ,Delta , Dig_Diff0 , Dig_Diff1***.
 >   - Pour la colonnes $time$, sélectionner le ***point*** en tant que **séparateur décimal**.
 >
 ></details>
 >
 ><details>
->     <summary><b>2 Normaliser la colonne Dij0</b></summary><br>
+>     <summary><b>2 Normaliser la colonne Dig_0</b></summary><br>
 >
 >><details>
 >><summary><b>Pré traitement</b></summary><br>
 >>
->>-  ( 1a ) Insérer sept lignes, en haut de feuille, pour laisser de la place pour les calculs qui suivent.
+>>-  ( 1a ) Insérer sept lignes, en haut de la feuille, pour laisser de la place pour les calculs qui suivent.
 >>-  ( 1b ) Insérer une colonne $[A]$ pour laisser de la place pour les calculs qui suivent.
 >>-  ( 2 ) Nommer la colonne $[E]$ par le label $Gap$. Les cellules contiendrons $Gap(t_{I}) = Dij1(t_{I}) - Dij0(t_{I})$
 >>-  ( 3 ) Calculer les valeurs : Cellule $[B4] = MAX(Dij0)$ et Cellule $[B5] = MIN(Dij0)$ avec $t_{I} \in [0,0001; t_{15s}]$.
