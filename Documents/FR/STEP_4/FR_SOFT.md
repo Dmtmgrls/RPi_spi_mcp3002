@@ -316,8 +316,8 @@ Niveau ⭐⭐⭐⭐
 >>   <summary><b>Traitement des données</b></summary>
 >>
 >>- Les données seront traitée sous ***Excel***.<br>
->>   - [Traitement de la phase de monté en température](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/FR/STEP_3/FR_EXCEL_WARM_UP.md) .<br>
->>   - [Traitement de la phase de refroidissement](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/FR/STEP_3/FR_EXCEL_COOLING.md).<br><br>
+>>   - [Traitement de la phase de monté en température](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/FR/STEP_4/FR_EXCEL_WARM_UP.md) .<br>
+>>   - [Traitement de la phase de refroidissement](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/FR/STEP_4/FR_EXCEL_COOLING.md).<br><br>
 >>
 >>- On peut déjà donné un exemple de traitement correspondant à la phase de monté en température :<br><br>
 >>
