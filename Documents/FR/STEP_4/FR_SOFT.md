@@ -40,7 +40,7 @@ Niveau ⭐⭐⭐⭐
 >>-  Les mesures se déroulerons de la façon suivante :<br>
 >>
 >>    -   Phase $1$ : ***montée en température*** : <br>
->>       -1    On laisse les deux $TMP36$ se stabiliser.<br>
+>>       -1    On laisse les deux $TMP36$ se stabiliser en température.<br>
 >>       -2    On lance le programme de mesure.<br>
 >>       -3    On chauffe avec les doigts le $TMP36$ connecté sur le canal ***CH1***.<br>
 >>       -4    Au bout de 15 secondes le programme affiche un message indiquant que l'on passe en mode refroidissement.<br>
@@ -65,7 +65,7 @@ Niveau ⭐⭐⭐⭐
 >>>
 >>>- Il faut faire le maximum de mesure dans le temps imparti, et réduire au maximum le temps de digitalisation.<br>
 >>>     - Le temps choisi entre deux mesures est de $50$ $ms$.<br>
->>>     - La fréquence d'horloge ***SPI*** choisie est de $10$ $KHz$.<br>
+>>>     - La fréquence d'horloge ***SPI*** choisie est de $4$ $KHz$.<br>
 >>>
 >>>- Le code n'étant pas compilé, celui-ci doit être le plus efficace possible.<br>
 >>>     - Code minimaliste.<br>
@@ -73,31 +73,39 @@ Niveau ⭐⭐⭐⭐
 >>>     - Pas d'enregistrement des résultats de mesures dans un fichier au fils des mesures. <br>
 >>>
 >>>- Du fait que la mesure de température est calculée à partir de la digitalisation fournie par le MCP3002<br>
->>>  il n'est pas nécessaire de mémoriser les température ( float ) mais uniquement le code de digitalisation ( octet )<br>
->>>  (ici le préfix $Dig$ signifie $Digitalisation$
+>>>  il n'est pas nécessaire de mémoriser les températures ( float ) mais uniquement le code de digitalisation ( octet )<br>
+>>>  (ici le préfix $Dig$ signifie $Digitalisation$)
 >>>     - Le code doit mémoriser les valeurs $Dig_{0}$ et $Dig_{Diff1}$ obtenues respectivement sur ***CH0*** et ***CH1*** du **MCP3002**.<br>
 >>>     - Le code doit mémoriser les valeurs $Dig_{Diff0}$ obtenue respectivement sur ***CH+*** et ***CH-*** du **MCP3002**.<br>
 >>>     - Le code doit mémoriser les valeurs $Dig_{Diff1}$ obtenue respectivement sur ***CH-*** et ***CH+*** du **MCP3002**.<br>
 >>>     - Le code doit mémoriser la référence temporelle associée issue de l'horloge système. <br>
 >>>
->>>- Chaque mesure aura 5 champs de données.<br>
->>>     - Le premier champ est la référence temporelle correspondant au début de la digitalisation sur le canal ***CH1***.<br>
->>>       Cette référence ne sera pas absolue, mais correspondra au temps écoulé depuis la première mesure.   
->>>     - Les deux champs suivants correspondent à $Dig_{0}$ et $Dig_{1}$; dans cet ordre, au mode $Asymétrique$.<br>
->>>     - Les deux champs suivants correspondent à $Dig_{Diff0}$ et $Dig_{Diff1}$; dans cet ordre, au mode $Différentiel$.<br>
->>>     - Les champs seront séparés par le caractère virgule $,$<br>
+>>>- Chaque mesure correspondra à 4 numérisations faites dans l'ordre suivant :<br>
+>>>    - digitalisation asymétrique sur $CH1$<br> 
+>>>    - digitalisation différentielle sur $CH0+$.<br>
+>>>    - digitalisation différentielle sur $CH1+$.<br>
+>>>    - digitalisation asymétrique sur $CH0$<br>
 >>>
->>>     -  $mesure(t_{I})$ ::= $t_{I}$ $,$ $Dig_{0}(t_{I})$ $,$ $Dig_{1}(t_{I})$ $,$  $Dig_{Diff0}(t_{I})$ $,$ $Dig_{Diff1}(t_{I})$
+>>>- Chaque mesure aura 6 champs de données.<br>
+>>>     - Le premier champ nommé ***time*** correspond à la référence temporelle de la mesure.<br>
+>>>       Entre chaque mesure s'écoulera un délais de 50 ms environ.<br>
+>>>       La référence remporelle est relative à la première mesure prise comme origine $time = 0$.<br>  
+>>>     - Les deux champs suivants nommés $Dig_{0}$ et $Dig_{1}$ dans cet ordre, correspondent au mode $Asymétrique$.<br>
+>>>     - le champ suivant nommé  $Delta$ correspond à la soustraction : $Dig_{1} - Dig_{0}$
+>>>     - Les deux champs suivants nommés $Dig_{Diff0}$ et $Dig_{Diff1}$ dans cet ordre, correspondent au mode $Différentiel$.<br>
+>>>     - Tous les champs seront séparés par le caractère virgule $,$<br>
+>>>
+>>>     -  $mesure(t_{I})$ ::= $t_{I}$ $,$ $Dig_{0}(t_{I})$ $,$ $Dig_{1}(t_{I})$ $,$ $Delta(t_{I})$ $,$  $Dig_{Diff0}(t_{I})$ $,$ $Dig_{Diff1}(t_{I})$
 >>></details>
 >>>
 >>><details>
 >>>   <summary><b>Prétraitement des données avant l'interprétation des mesures.</b></summary><br>
 >>>
->>>- Sachant que la digitalisation est à $\pm1$ bit il faudra ***normaliser/corriger*** les champs $Dig0$ et $Dig1$:<br><br>
->>>    - Si pour $t_{I} \in [t_{0},t_{FINAL}]$ $Dig0(t_{I}) = M$  mais que $\exists$ quelques $t_{Q} \subset [t_{0},t_{FINAL}]$ tel que  $Dig0(t_{Q}) = M\pm1$<br>
->>>          alors il faut corriger $Dig0(t_{Q}) = M$.<br><br>
->>>     - Si pour $t_{I} \in [t_{a},t_{b}]$ $Dig1(t_{I}) = N$  mais que $\exists$ quelques $t_{P} \subset [t_{a},t_{b}]$ tel que  $Dig1(t_{P}) = N\pm1$<br>
->>>       alors il faut corriger $Dig1(t_{P}) = N$.<br>
+>>>- Sachant que la digitalisation est à $\pm1$ bit il faudra ***normaliser/corriger*** les champs $Dig_{0}$ et $Dig_{1}$:<br><br>
+>>>    - Si pour $t_{I} \in [t_{0},t_{FINAL}]$ $Dig_{0}(t_{I}) = M$  mais que $\exists$ quelques $t_{Q} \subset [t_{0},t_{FINAL}]$ tel que  $Dig_{0}(t_{Q}) = M\pm1$<br>
+>>>          alors il faut corriger $Dig_{0}(t_{Q}) = M$.<br><br>
+>>>     - Si pour $t_{I} \in [t_{a},t_{b}]$ $Dig_{1}(t_{I}) = N$  mais que $\exists$ quelques $t_{P} \subset [t_{a},t_{b}]$ tel que  $Dig_{1}(t_{P}) = N\pm1$<br>
+>>>       alors il faut corriger $Dig_{1}(t_{P}) = N$.<br>
 >>></details>
 >>>
 >>><details>
@@ -158,37 +166,32 @@ Niveau ⭐⭐⭐⭐
 >>>
 >>>````
 >>>==> mesure_rise.txt <==
->>>Dig0;Dig1;time
->>>208;  213;0.00001 
->>>207;  212;0.01036
->>>206;  212;0.02057
->>>208;  213;0.03077
->>>208;  212;0.04097
->>>206;  212;0.05117
+>>>time,Dig_0,Dig_1,Delta,Dig_Diff0,Dig_Diff1
+>>>0.00001,  224,  225,    1,    0,    0
+>>>0.05396,  224,  225,    1,    0,    0
+>>>0.10732,  224,  225,    1,    0,    0
+>>>0.16067,  224,  224,    0,    0,    0
+>>>0.21405,  224,  225,    1,    0,    0
 >>> ........
->>>220;  245;14.93956
->>>220;  245;14.94991
->>>220;  245;14.96025
->>>220;  245;14.97060
->>>221;  247;14.98094
->>>220;  245;14.99129
->>>220;  245;15.00163   
+>>>14.81087,  224,  251,   27,    0,   26
+>>>14.86423,  224,  252,   28,    0,   26
+>>>14.91757,  224,  252,   28,    0,   26
+>>>14.97091,  224,  251,   27,    0,   26
+>>>15.02426,  224,  252,   28,    0,   26
 >>>
 >>>==> mesure_cooling.txt <==
->>>Dig0;Dig1;time
->>>220;  245;0.00001    
->>>220;  245;0.01038
->>>220;  245;0.02076
->>>220;  246;0.03110
->>>220;  245;0.04145
->>>2220;  245;0.05180
+>>>time,Dig_0,Dig_1,Delta,Dig_Diff0,Dig_Diff1
+>>>0.00001,  224,  249,   25,    0,   23
+>>>0.05346,  224,  248,   24,    0,   24
+>>>0.10702,  224,  249,   25,    0,   23
+>>>0.16045,  224,  249,   25,    0,   23
+>>>0.21248,  224,  248,   24,    0,   23
 >>>  .........
->>>219;  225;59.94911
->>>220;  225;59.95946
->>>220;  225;59.96981
->>>2219;  225;59.98015
->>>218;  224;59.99051
->>>218;  224;60.00083   
+>>>69.80008,  224,  227,    3,    0,    1
+>>>69.85342,  224,  227,    3,    0,    2
+>>>69.90678,  224,  227,    3,    0,    2
+>>>69.96041,  224,  227,    3,    0,    1
+>>>70.01459,  224,  227,    3,    0,    2
 >>>````   
 >>></details>
 >> 
@@ -207,17 +210,21 @@ Niveau ⭐⭐⭐⭐
 >>SPI_BUS_0 = 0  #  system device either /dev/spidev0.0  or  /dev/spidev0.1
 >>
 >>SPEED_STANDAR = 4000     # Hz
->>SPEED_FAST    = 40000    # Hz
+>>SPEED_FAST    = 4000     # Hz
 >>REQUEST_CH0 = [ 0x60, 0x00 ] # query to obtain the digitalization voltage on CH0
 >>REQUEST_CH1 = [ 0x70, 0x00 ] # query to obtain the digitalization voltage on CH1
+>>REQUEST_DIFF_CH0 = [ 0x48, 0x00 ] # query to obtain the digitalization voltage on CH0 - CH1
+>>REQUEST_DIFF_CH1 = [ 0x58, 0x00 ] # query to obtain the digitalization voltage diff  CH1 - CH0
 >>
 >>RESOLUTION    =  10             # bits
 >>NB_OF_SAMPLES = 2**RESOLUTION
 >>
 >>TIME_PHASE_RISING  = 15.0       # second
->>TIME_PHASE_COOLING = 60.0       # second
->>WAITING_TIME       = 0.00863    # second to obtain 10 ms beetwen 2 maesures
->>TITLE              = "Dig0;Dig1;time\n"
+>>TIME_PHASE_COOLING = 70.0       # second
+>>WAITING_TIME       = 0.03416    # second to obtain 50  ms beetwen 2 maesures
+>>TITLE              = "time,Dig_0,Dig_1,Delta,Dig_Diff0,Dig_Diff1\n"
+>>NAME_FILE_RISE     = "./mesures_rise.txt" 
+>>NAME_FILE_COOLING  = "./mesures_cooling.txt"
 >>
 >># Create instance
 >>spi = spidev.SpiDev()
@@ -225,66 +232,79 @@ Niveau ⭐⭐⭐⭐
 >># Open /dev/spidev0.0  with   CE0 -> CS of MCP3002
 >>spi.open( SPI_BUS_0, CE0 )
 >>
->># Return the digitalized value from chanel 0 or 1 of MCP3002 
+>># Return the digitalized differential value from chanels of MCP3002 
 >>def get_digitalValue( request, speed ):
->>   demande = request[:]
->>   reponse =  spi.xfer2( demande , speed)
->>   return (reponse[0] <<8 | reponse[1])
+>>  demande = request[:]
+>>  reponse =  spi.xfer2( demande , speed)
+>>  return (reponse[0] <<8 | reponse[1])
+>>
 >>
 >>#---------------------
 >># MAIN MAIN MAIN MAIN
 >>#---------------------
 >>
->>print("\n START TEMPERATURE RISE PHASE (touch the TMP36)\n")
+>>print(f"\n START TEMPERATURE RISE PHASE (touch the TMP36 {TIME_PHASE_RISING} seconds)\n")
 >>
->>list_mesures_up = []  # List containing all the measurements
->>ti = 0                # Time reference of the ith measure
->>to = time.time()      # Time reference for starting measurements
->>while ti < TIME_PHASE_RISING:
->>   
->>   ti = time.time() - to
->> 
->>   digitalValueCH1 = get_digitalValue(REQUEST_CH1, SPEED_FAST )
->>   digitalValueCH0 = get_digitalValue(REQUEST_CH0, SPEED_FAST )
->>
->>   list_mesures_up.append( [digitalValueCH0, digitalValueCH1, ti])
->>   
->>   time.sleep(WAITING_TIME) 
->>
->>
->>print("\n START COOLING PHASE (no longer touches the TMP36)\n")
->>
->>list_mesures_down = []  # List containing all the measurements
+>>list_mesures_up = []    # List containing all the measurements
 >>ti = 0                  # Time reference of the ith measure
 >>to = time.time()        # Time reference for starting measurements
->>while ti < TIME_PHASE_COOLING:
+>>while True:
+>>  
+>>  ti = time.time() - to
 >>
->>   ti = time.time() - to
+>>  digitalValue_CH1 = get_digitalValue( REQUEST_CH1,  SPEED_FAST )
+>>  digitalDiffValue_CH0 = get_digitalValue( REQUEST_DIFF_CH0,  SPEED_FAST )
+>>  digitalDiffValue_CH1 = get_digitalValue( REQUEST_DIFF_CH1,  SPEED_FAST )
+>>  digitalValue_CH0 = get_digitalValue( REQUEST_CH0,  SPEED_FAST )
 >>
->>   digitalValueCH1 = get_digitalValue(REQUEST_CH1, SPEED_FAST )
->>   digitalValueCH0 = get_digitalValue(REQUEST_CH0, SPEED_FAST )
+>>  list_mesures_up.append( [ti, digitalValue_CH0, digitalValue_CH1, digitalDiffValue_CH0, digitalDiffValue_CH1])
+>>  
+>>  time.sleep(WAITING_TIME) 
+>>  
+>>  if ti > TIME_PHASE_RISING:
+>>    break
 >>
->>   list_mesures_down.append( [digitalValueCH0, digitalValueCH1, ti])
 >>
->>   time.sleep(WAITING_TIME)
->> 
+>>print(f"\n START COOLING PHASE (no longer touches the TMP36 {TIME_PHASE_COOLING} seconds)\n")
+>>time.sleep(3) # perator response
+>>
+>>list_mesures_down = []  # List containing all the measurements
+>>tj = 0                  # Time reference of the jth measure
+>>to = time.time()        # Time reference for starting measurements
+>>while True:
+>>
+>>  tj = time.time() - to
+>>
+>>  digitalValue_CH1 = get_digitalValue( REQUEST_CH1,  SPEED_FAST )
+>>  digitalDiffValue_CH0 = get_digitalValue( REQUEST_DIFF_CH0,  SPEED_FAST )
+>>  digitalDiffValue_CH1 = get_digitalValue( REQUEST_DIFF_CH1,  SPEED_FAST )
+>>  digitalValue_CH0 = get_digitalValue( REQUEST_CH0,  SPEED_FAST )
+>>
+>>  list_mesures_down.append( [tj, digitalValue_CH0, digitalValue_CH1, digitalDiffValue_CH0, digitalDiffValue_CH1])
+>>
+>>  time.sleep(WAITING_TIME)
+>>
+>>  if  tj > TIME_PHASE_COOLING:
+>>     break 
+>>
+>>
 >>print("\n MEASURES DONE \n")
 >>print(" START MAKE OUTPUT FILES\n")
 >>
 >># Create output file  rise
->>out_file = io.open( "./mesure_rise.txt", "w")
+>>out_file = io.open( NAME_FILE_RISE, "w")
 >>out_file.write(TITLE)
 >>
 >>for mesure in list_mesures_up : 
->>   out_file.write(f"{mesure[0]:5};{mesure[1]:5};{mesure[2]:6.5f}\n")
+>>  out_file.write(f"{mesure[0]:6.5f},{mesure[1]:5},{mesure[2]:5},{mesure[2]-mesure[1]:5},{mesure[3]:5},{mesure[4]:5}\n")
 >>out_file.close() 
 >>
 >># Create output file cooling 
->>out_file = io.open( "./mesure_cooling.txt", "w")
+>>out_file = io.open( NAME_FILE_COOLING, "w")
 >>out_file.write(TITLE)
 >>
 >>for mesure in list_mesures_down :
->>   out_file.write(f"{mesure[0]:5};{mesure[1]:5};{mesure[2]:6.5f}\n")
+>>  out_file.write(f"{mesure[0]:6.5f},{mesure[1]:5},{mesure[2]:5},{mesure[2]-mesure[1]:5},{mesure[3]:5},{mesure[4]:5}\n")
 >>out_file.close()
 >>
 >>print(" FINISH \n")
