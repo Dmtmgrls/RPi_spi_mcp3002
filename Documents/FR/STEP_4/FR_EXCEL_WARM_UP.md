@@ -12,7 +12,7 @@ Niveau ⭐⭐⭐⭐
 > Il faut pré-formater ce fichier sur les 3 aspects suivants :<br>
 >
 >   - Les champs du fichier sont délimités par le caractère ***virgule*** $,$.
->   - Le fichier contient l'en-tête ***time , Dig_0 , Dig_1  ,Delta , Dig_Diff0 , Dig_Diff1***.
+>   - Le fichier contient l'en-tête ***time , time_D , Dig_0 , Dig_1 , Delta , Model_Asym , Ecart , Dig_Diff0 , Dig_Diff1 , Model Diff, Ecart ***.
 >   - Pour la colonnes $time$, sélectionner le ***point*** en tant que **séparateur décimal**.
 >
 ></details>
