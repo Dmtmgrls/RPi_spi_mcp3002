@@ -106,7 +106,7 @@ Niveau ⭐⭐⭐⭐
 >>>    | 2 | Calcul | ***time_D*** | Les premières mesures dépendent de la réactivité de l'opérateur.<br>Après élimination des ces premières mesures il faut recalculer les références temporelles.<br>$$time\\_D = time - Decalage$$
 >>>    | 3 | Data | ***Dig_0*** | Digitalisation $Dig_{0}$ du canal $0$ en mode asymétrique. |
 >>>    | 4 | Data | ***Dig_1*** | Digitalisation $Dig_{1}$ du canal $1$ en mode asymétrique. |
->>>    | 5 | Calcul | ***Delta*** | $$Delta = Dig_{1} - Dig_{0}$$ |
+>>>    | 5 | Calcul | ***Delta*** | $$Delta = Dig\\_1 - Dig\\_0$$ |
 >>>    | 6 | Calcul | ***Model_Asym*** | Calcul de modélisation en mode asymétrique.<br>$$Model\\_Asym = F(\frac{time\\_D}{\tau})$$|
 >>>    | 7 | Calcul | ***Ecart*** | Calcul des moindres carrés en mode asymétrique.<br>$$Ecart = (Delta - Model\\_Asym)^2$$ | 
 >>>    | 8 | Data | ***Dig_Diff0*** | Digitalisation $Dig_{Diff0}$ du canal $CH0+$ en mode différentiel.<br>Normalement toujours égal à $0$ |
@@ -183,33 +183,37 @@ Niveau ⭐⭐⭐⭐
 >>>
 >>>````
 >>>==> mesure_rise.txt <==
->>>time,Dig_0,Dig_1,Delta,Dig_Diff0,Dig_Diff1
->>>0.00001,  224,  225,    1,    0,    0
->>>0.05396,  224,  225,    1,    0,    0
->>>0.10732,  224,  225,    1,    0,    0
->>>0.16067,  224,  224,    0,    0,    0
->>>0.21405,  224,  225,    1,    0,    0
+>>>time,time_D,Dig_0,Dig_1,Delta,Model_Delta,Ecart,Dig_Diff0,Dig_Diff1,Model_Diff,Ecart
+>>>0.00000,,  231,  232,,,,    0,    0,,
+>>>0.04625,,  231,  232,,,,    0,    0,,
+>>>0.09239,,  232,  232,,,,    0,    0,,
+>>>0.13852,,  232,  232,,,,    0,    0,,
+>>>0.18464,,  232,  232,,,,    0,    0,,
 >>> ........
->>>14.81087,  224,  251,   27,    0,   26
->>>14.86423,  224,  252,   28,    0,   26
->>>14.91757,  224,  252,   28,    0,   26
->>>14.97091,  224,  251,   27,    0,   26
->>>15.02426,  224,  252,   28,    0,   26
+>>>14.81087,,  224,  251,,,,    0,   26,,
+>>>14.86423,,  224,  252,,,,    0,   26,,
+>>>14.91757,,  224,  252,,,,    0,   26,,
+>>>14.97091,,  224,  251,,,,    0,   26,,
+>>>15.02426,,  224,  252,,,,    0,   26,,
 >>>
 >>>==> mesure_cooling.txt <==
 >>>time,Dig_0,Dig_1,Delta,Dig_Diff0,Dig_Diff1
->>>0.00001,  224,  249,   25,    0,   23
->>>0.05346,  224,  248,   24,    0,   24
->>>0.10702,  224,  249,   25,    0,   23
->>>0.16045,  224,  249,   25,    0,   23
->>>0.21248,  224,  248,   24,    0,   23
+>>>0.00001,,  224,  249,,,,    0,   23,,
+>>>0.05346,,  224,  248,,,,    0,   24,,
+>>>0.10702,,  224,  249,,,,    0,   23,,
+>>>0.16045,,  224,  249,,,,    0,   23,,
+>>>0.21248,,  224,  248,,,,    0,   23,,
 >>>  .........
->>>69.80008,  224,  227,    3,    0,    1
->>>69.85342,  224,  227,    3,    0,    2
->>>69.90678,  224,  227,    3,    0,    2
->>>69.96041,  224,  227,    3,    0,    1
->>>70.01459,  224,  227,    3,    0,    2
->>>````   
+>>>69.80008,,  224,  227,,,,    0,    1,,
+>>>69.85342,,  224,  227,,,,    0,    2,,
+>>>69.90678,,  224,  227,,,,    0,    2,,
+>>>69.96041,,  224,  227,,,,    0,    1,,
+>>>70.01459,,  224,  227,,,,    0,    2,,
+>>>```` 
+>>>
+>>>- Ce qui, dans le tableur, donnera le format suivant : <br>
+>>>
+>>>![](https://github.com/Dmtmgrls/RPi_spi_mcp3002/blob/main/Documents/PICTURES/Exemple_file_Excel_step4_Soft.png)
 >>></details>
 >> 
 >></details>  
@@ -239,7 +243,7 @@ Niveau ⭐⭐⭐⭐
 >>TIME_PHASE_RISING  = 15.0       # second
 >>TIME_PHASE_COOLING = 70.0       # second
 >>WAITING_TIME       = 0.03416    # second to obtain 50  ms beetwen 2 maesures
->>TITLE              = "time,Dig_0,Dig_1,Delta,Dig_Diff0,Dig_Diff1\n"
+>>TITLE              = "time,time_D,Dig_0,Dig_1,Delta,Model_Delta,Ecart,Dig_Diff0,Dig_Diff1,Model_Diff,Ecart\n"
 >>NAME_FILE_RISE     = "./mesures_rise.txt" 
 >>NAME_FILE_COOLING  = "./mesures_cooling.txt"
 >>
@@ -313,7 +317,7 @@ Niveau ⭐⭐⭐⭐
 >>out_file.write(TITLE)
 >>
 >>for mesure in list_mesures_up : 
->>  out_file.write(f"{mesure[0]:6.5f},{mesure[1]:5},{mesure[2]:5},{mesure[2]-mesure[1]:5},{mesure[3]:5},{mesure[4]:5}\n")
+>>  out_file.write(f"{mesure[0]:6.5f},,{mesure[1]:5},{mesure[2]:5},,,,{mesure[3]:5},{mesure[4]:5},,\n")
 >>out_file.close() 
 >>
 >># Create output file cooling 
@@ -321,7 +325,7 @@ Niveau ⭐⭐⭐⭐
 >>out_file.write(TITLE)
 >>
 >>for mesure in list_mesures_down :
->>  out_file.write(f"{mesure[0]:6.5f},{mesure[1]:5},{mesure[2]:5},{mesure[2]-mesure[1]:5},{mesure[3]:5},{mesure[4]:5}\n")
+>>  out_file.write(f"{mesure[0]:6.5f},,{mesure[1]:5},{mesure[2]:5},,,,{mesure[3]:5},{mesure[4]:5},,\n")
 >>out_file.close()
 >>
 >>print(" FINISH \n")
@@ -385,3 +389,4 @@ Niveau ⭐⭐⭐⭐
 ></details>
 
 </details>
+
