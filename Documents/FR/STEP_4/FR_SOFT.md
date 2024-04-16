@@ -74,11 +74,11 @@ Niveau ⭐⭐⭐⭐
 >>></details>
 >>>
 >>><details>
->>>   <summary><b>Quelles sont les mesures? .</b></summary><br>
+>>>   <summary><b>Quelles sont les mesures?</b></summary><br>
 >>>
->>>- Du fait que la mesure de température est calculée à partir de la digitalisation fournie par le MCP3002<br>
->>>  il n'est pas nécessaire de mémoriser les températures ( float ) mais uniquement le code de digitalisation ( octet )<br>
->>>  (ici le préfix $Dig$ signifie $Digitalisation$)<br>
+>>>- Du fait que la mesure de température est calculée à partir de la digitalisation fournie par le MCP3002,<br>
+>>>  il n'est pas nécessaire de mémoriser les températures ( float ) mais uniquement le code de digitalisation ( octet )<br><br>
+>>>  <b><ins>Remarque : </ins></b>Dans ce qui suit, le préfix $Dig$ signifie $Digitalisation$)<br>
 >>>
 >>>     - Le code doit mémoriser la référence temporelle associée issue de l'horloge système. <br>
 >>>     - Le code doit mémoriser les valeurs $Dig_{0}$ et $Dig_{1}$ obtenues respectivement sur ***CH0*** et ***CH1*** du **MCP3002**.<br>
@@ -93,26 +93,26 @@ Niveau ⭐⭐⭐⭐
 >>></details>
 >>>
 >>><details>
->>>   <summary><b>Quelles sont les champs des fichiers de sortie? .</b></summary><br>
+>>>   <summary><b>Quelles sont les champs des fichiers de sortie?</b></summary><br>
 >>>
->>>-  Sachant que les données seront traitées dans un tableur (Excel), à chaque mesure nous aurons :<br>
+>>>- Tous les champs seront séparés par une virgule : $,$<br>
 >>>
->>>    -  <b><ins>5 champs de données : </ins></b> (rang, libellé)<br>
->>>       - 1 <b>time</b> : La référence temporel de la mesure. Entre chaque mesure s'écoulera un délais de 50 ms environ.<br>
->>>       - 3 <b>Dig_0</b> : La digitalisation $Dig_{0}$ du canal $0$ en mode asymétrique.<br>
->>>       - 4 <b>Dig_1</b> : La digitalisation $Dig_{1}$ du canal $1$ en mode asymétrique.<br>
->>>       - 8 <b>Dig_Diff0</b> : La digitalisation $Dig_{Diff0}$ du canal $CH0+$ en mode différentiel.<br>
->>>       - 9 <b>Dig_Diff1</b> : La digitalisation $Dig_{Diff1} du canal $CH1+$ en mode différentiel.<br>      
+>>>-  Sachant que les données seront traitées dans un tableur (Excel), nous aurons besoins de colonnes affectées aux calculs.<br>
+>>>   Nous allons préformater le fichier de telle sorte que pour chaque mesure nous ayons des champs de type ***Data*** et des champs de type ***Calcul*** :<br><br> 
 >>>
->>>    -  <b><ins>6 champs de calcul : </ins></b>(rang, libellé)<br>
->>>       - 2 <b>time_D</b> : La référence temporelle après un décalge temporel pour éliminer les premières mesures.<br>
->>>       - 5 <b>Delta</b> : pour le calcul de  $Dig_{1} - Dig_{0}$.<br>
->>>       - 6 <b>Model_Asym</b> : pour le calcul du model en mode asymétrique.<br>
->>>       - 7 <b>Ecart</b>: pour le calcul des moindres carrés.<br> 
->>>       - 10 <b>Model_Diff</b> : pour le calcul du model en mode différentiel<br>
->>>       - 11 <b>Ecart</b> : pour le calcul des moindres carrés.<br> 
->>>
->>>   - Tous les champs seront séparés par le caractère virgule $,$<br>
+>>>    | Rang | Type | Libellé | Description |
+>>>    |---|---|---|---|
+>>>    | 1 | Data | ***time*** | Référence temporelle de la mesure.<br>Entre chaque mesure s'écoulera un délais de 50 ms environ |
+>>>    | 2 | Calcul | ***time_D*** | Les premières mesures dépendent de la réactivité de l'opérateur.<br>Après élimination des ces premières mesures il faut recalculer les références temporelles.<br>$$time\\_D = time - Decalage$$
+>>>    | 3 | Data | ***Dig_0*** | Digitalisation $Dig_{0}$ du canal $0$ en mode asymétrique. |
+>>>    | 4 | Data | ***Dig_1*** | Digitalisation $Dig_{1}$ du canal $1$ en mode asymétrique. |
+>>>    | 5 | Calcul | ***Delta*** | $$Delta = Dig_{1} - Dig_{0}$$ |
+>>>    | 6 | Calcul | ***Model_Asym*** | Calcul de modélisation en mode asymétrique.<br>$$Model\\_Asym = F(\frac{time\\_D}{\tau})$$|
+>>>    | 7 | Calcul | ***Ecart*** | Calcul des moindres carrés en mode asymétrique.<br>$$Ecart = (Delta - Model\\_Asym)^2$$ | 
+>>>    | 8 | Data | ***Dig_Diff0*** | Digitalisation $Dig_{Diff0}$ du canal $CH0+$ en mode différentiel.<br>Normalement toujours égal à $0$ |
+>>>    | 9 | Data | ***Dig_Diff1*** | Digitalisation $Dig_{Diff1}$ du canal $CH1+$ en mode différentiel. | 
+>>>    | 10 | Calcul | ***Model_Diff*** | Calcul de modélisation en mode différentiel..<br>$$Model\\_Diff = G(\frac{time\\_D}{\tau})$$ |
+>>>    | 11 | Calcul | ***Ecart*** | Calcul des moindres carrés en mode différentiel.<br>$$Ecart = (Dig\\_Diff1 - Model\\_Diff)^2$$ | 
 >>></details>
 >>>
 >>><details>
